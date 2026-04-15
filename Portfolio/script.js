@@ -1,12 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
 
-  document.querySelectorAll(".nav-button[data-href]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const href = btn.getAttribute("data-href");
+  document.querySelectorAll("[data-href]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const href = el.getAttribute("data-href");
       if (href) window.location.assign(href);
     });
   });
+
+  if (!body.classList.contains("intro-active")) return;
 
   // Intro sequence: reveal logo, fade subtitle, then shrink title into header.
   requestAnimationFrame(() => {
