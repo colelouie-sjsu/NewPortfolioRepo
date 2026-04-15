@@ -771,7 +771,7 @@ body.page-motion-mg main.motion-mg-page {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   text-align: center;
-  color: #fff;
+  color: #0d0d0d;
 }
 
 .motion-mg-expand__grid {
@@ -863,5 +863,6 @@ body.page-motion-mg main.motion-mg-page {
     padding: 0.45rem 0.8rem;
   }
 }
+
 
 
