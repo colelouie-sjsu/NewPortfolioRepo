@@ -1,0 +1,378 @@
+@font-face {
+  font-family: "WoodBlock";
+  src: url("Wood Block CG Regular.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --paper-overlay-opacity: 0.26;
+}
+
+body {
+  margin: 0;
+  font-family: "Arial Black", Arial, sans-serif;
+  background-color: #e82142;
+  color: #fff;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Crumpled paper texture over the red, subtle */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: url("paper.jpg") center / cover no-repeat;
+  opacity: var(--paper-overlay-opacity);
+  pointer-events: none;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+.site-header {
+  position: relative;
+  width: 100%;
+  background-color: #e82142;
+  padding-top: 0.85rem;
+}
+
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: url("paper.jpg") center / cover no-repeat;
+  opacity: var(--paper-overlay-opacity);
+  pointer-events: none;
+}
+
+.site-header > * {
+  position: relative;
+  z-index: 1;
+}
+
+.top-nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 0.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.nav-button {
+  background: #f5f5f5;
+  color: #a31c2f;
+  text-decoration: none;
+  font-family: Arial, sans-serif;
+  font-size: 1.9rem;
+  padding: 0.45rem 1.4rem;
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  line-height: 1;
+  transition: opacity 0.45s ease;
+}
+
+.site-title {
+  width: min(46vw, 500px);
+  height: auto;
+  display: block;
+  margin: 0;
+  transition: opacity 0.45s ease;
+}
+
+.header-divider {
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.95);
+  transition: opacity 0.45s ease;
+}
+
+.portfolio-layout {
+  --portfolio-gap: 1.35rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--portfolio-gap) 1.5rem 2.25rem;
+  transition: opacity 0.45s ease;
+}
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #e82142;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  transition: opacity 0.55s ease, visibility 0.55s ease;
+}
+
+.intro-logo {
+  width: min(94vw, 980px);
+  display: block;
+  margin: 0 auto;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.5s ease, transform 1.35s cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+.intro-subtitle {
+  margin: 0.35rem 0 0;
+  font-family: Arial, sans-serif;
+  font-size: clamp(1rem, 2vw, 1.7rem);
+  font-weight: 400;
+  letter-spacing: 0.4px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+/* Hide main UI only during intro, not after intro-exit is removed (that was the bug:
+   body:not(.intro-exit) matched again once .intro-exit was cleared). */
+body.intro-active:not(.intro-exit):not(.intro-complete) .portfolio-layout {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.intro-active:not(.intro-exit):not(.intro-complete) .site-title,
+body.intro-active:not(.intro-exit):not(.intro-complete) .nav-button,
+body.intro-active:not(.intro-exit):not(.intro-complete) .header-divider {
+  opacity: 0;
+}
+
+body.intro-visible .intro-logo {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+body.intro-subtitle-visible .intro-subtitle {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.intro-exit .intro-logo {
+  transform: translateY(-42vh) scale(0.48);
+  opacity: 0.9;
+  transition-duration: 0.75s;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.intro-exit .intro-subtitle {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+body.intro-exit .intro-overlay {
+  opacity: 0.22;
+}
+
+body.intro-complete .intro-overlay {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.project-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows:
+    minmax(280px, 0.85fr)
+    minmax(300px, 1fr)
+    minmax(300px, 1fr)
+    minmax(860px, 2.85fr);
+  grid-template-areas:
+    "top   top"
+    "left  rtop"
+    "left  rbot"
+    "bleft bright";
+  column-gap: var(--portfolio-gap, 1.35rem);
+  row-gap: var(--portfolio-gap, 1.35rem);
+  align-items: stretch;
+  justify-items: stretch;
+  width: 100%;
+}
+
+.project-tile:nth-child(1) {
+  grid-area: top;
+}
+
+.project-tile:nth-child(2) {
+  grid-area: left;
+}
+
+.project-tile:nth-child(3) {
+  grid-area: rtop;
+}
+
+.project-tile:nth-child(4) {
+  grid-area: rbot;
+}
+
+.project-tile:nth-child(5) {
+  grid-area: bleft;
+}
+
+.project-tile:nth-child(6) {
+  grid-area: bright;
+}
+
+.project-tile {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  color: #fff;
+  text-decoration: none;
+  transition: transform 0.18s ease;
+}
+
+.project-tile:hover {
+  transform: translateY(-4px);
+}
+
+.tile-image {
+  flex: 1 1 auto;
+  min-height: 0;
+  border: 3px solid #1a1e1f;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Full-width top strip — News Gothic frame, zoom/crop like other photo tiles */
+.tile-image-top {
+  position: relative;
+  overflow: hidden;
+  background-color: #2c2c2c;
+  background-image: none;
+}
+
+.tile-image-top::before {
+  content: "";
+  position: absolute;
+  inset: -12%;
+  background-image: url("Project 3_4.00_00_35_24.Still016.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  transform: translateY(20px);
+}
+
+/* Zoomed crop: tile box size unchanged; ::before is oversized then clipped */
+.tile-image-1 {
+  position: relative;
+  overflow: hidden;
+  background-color: #2d3a42;
+  background-image: none;
+}
+
+.tile-image-1::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background-image: url("vector.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.tile-image-2 {
+  position: relative;
+  overflow: hidden;
+  background-color: #e53a2b;
+  background-image: none;
+}
+
+.tile-image-2::before {
+  content: "";
+  position: absolute;
+  inset: -28%;
+  background-image: url("Jung Hoo poster-01.png");
+  background-size: cover;
+  background-position: center 36%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+.tile-image-3 {
+  background-image: linear-gradient(145deg, #f0f0f0 8%, #b3c7e7 45%, #eadce0 92%);
+}
+
+.tile-image-4 {
+  background-image: linear-gradient(145deg, #1a3a2f 6%, #3d7a5c 42%, #8bc4a6 88%);
+}
+
+.tile-image-5 {
+  background-image: linear-gradient(145deg, #2b1f3d 8%, #5c4a7a 48%, #c4a8e0 92%);
+}
+
+@media (max-width: 700px) {
+  .top-nav {
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 0.35rem;
+  }
+
+  .nav-button {
+    font-size: 1.2rem;
+    padding: 0.45rem 0.8rem;
+  }
+
+  .site-title {
+    width: min(82vw, 420px);
+  }
+
+  .project-row {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-template-areas: none;
+    grid-auto-rows: auto;
+    min-height: unset;
+  }
+
+  .project-tile:nth-child(1),
+  .project-tile:nth-child(2),
+  .project-tile:nth-child(3),
+  .project-tile:nth-child(4),
+  .project-tile:nth-child(5),
+  .project-tile:nth-child(6) {
+    grid-area: auto;
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .tile-image {
+    flex: 0 0 auto;
+    min-height: 360px;
+  }
+
+  .project-tile:nth-child(1) .tile-image {
+    min-height: 300px;
+  }
+
+  .project-tile:nth-child(5) .tile-image,
+  .project-tile:nth-child(6) .tile-image {
+    min-height: 680px;
+  }
+
+  .intro-subtitle {
+    margin-top: 0.2rem;
+  }
+
+  body.intro-exit .intro-logo {
+    transform: translateY(-42vh) scale(0.62);
+  }
+}
