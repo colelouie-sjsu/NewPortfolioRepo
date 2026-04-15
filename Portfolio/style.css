@@ -232,6 +232,8 @@ body.intro-complete .intro-overlay {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  position: relative;
+  overflow: hidden;
   color: #fff;
   text-decoration: none;
   transition: transform 0.18s ease;
@@ -239,6 +241,49 @@ body.intro-complete .intro-overlay {
 
 .project-tile:hover {
   transform: translateY(-4px);
+}
+
+.project-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.project-tile::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(100% - 1rem);
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: clamp(1.8rem, 5vw, 4.4rem);
+  font-weight: 700;
+  line-height: 0.95;
+  text-align: center;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+  opacity: 0;
+  transform: translate(-50%, -42%);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.project-tile:hover::before,
+.project-tile:focus-visible::before {
+  opacity: 1;
+}
+
+.project-tile:hover::after,
+.project-tile:focus-visible::after {
+  opacity: 1;
+  transform: translate(-50%, -50%);
 }
 
 .tile-image {
@@ -290,13 +335,38 @@ body.intro-complete .intro-overlay {
 }
 
 .tile-image-2 {
+  background-image: url("title card.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.tile-image-2::before {
+  content: none;
+}
+
+.tile-image-3 {
+  background-image: url("z1-01.png");
+  background-size: 120%;
+  background-position: center calc(50% - 20px);
+  background-repeat: no-repeat;
+}
+
+.tile-image-4 {
+  background-image: url("Bread Var_29.jpg");
+  background-size: 125%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.tile-image-5 {
   position: relative;
   overflow: hidden;
   background-color: #e53a2b;
   background-image: none;
 }
 
-.tile-image-2::before {
+.tile-image-5::before {
   content: "";
   position: absolute;
   inset: -28%;
@@ -307,16 +377,14 @@ body.intro-complete .intro-overlay {
   pointer-events: none;
 }
 
-.tile-image-3 {
-  background-image: linear-gradient(145deg, #f0f0f0 8%, #b3c7e7 45%, #eadce0 92%);
+/* Make only the bottom-left tile 100px shorter than its row */
+.project-tile:nth-child(5) {
+  align-self: start;
 }
 
-.tile-image-4 {
-  background-image: linear-gradient(145deg, #1a3a2f 6%, #3d7a5c 42%, #8bc4a6 88%);
-}
-
-.tile-image-5 {
-  background-image: linear-gradient(145deg, #2b1f3d 8%, #5c4a7a 48%, #c4a8e0 92%);
+.project-tile:nth-child(5) .tile-image {
+  flex: 0 0 auto;
+  height: 560px;
 }
 
 @media (max-width: 700px) {
