@@ -6,21 +6,86 @@
   <title>Motion Graphic Design — Cole Louie</title>
   <link rel="stylesheet" href="../style.css" />
 </head>
-<body>
+<body class="page-motion-mg">
   <header class="site-header">
-    <nav class="top-nav">
-      <button type="button" class="nav-button" data-href="contact.html">Contacts</button>
+    <nav class="top-nav top-nav--return-only" aria-label="Primary">
+      <button type="button" class="motion-mg-return motion-mg-return--header" data-href="../index.html">Return</button>
       <img class="site-title" src="../png.png" alt="Cole Louie" />
-      <button type="button" class="nav-button" data-href="about.html">About Page</button>
+      <span class="top-nav__spacer" aria-hidden="true"></span>
     </nav>
     <div class="header-divider" aria-hidden="true"></div>
   </header>
 
-  <main class="portfolio-layout project-detail">
-    <button type="button" class="nav-button project-detail__back" data-href="../index.html">← Portfolio</button>
-    <h1 class="project-detail__title">Motion Graphic Design</h1>
-    <p class="project-detail__lead">Project page for motion and News Gothic typography work. Add video embeds, process frames, and project copy here.</p>
+  <main class="portfolio-layout project-detail motion-mg-page">
+    <div class="motion-mg-list">
+      <div class="motion-mg-list__inner">
+        <button
+          type="button"
+          class="motion-mg-card"
+          data-video-src="../Works/Motion%20Graphics/DsGD100A_Pr3_Louie_Cole_1.mp4"
+          data-title="News Gothic Typography"
+          data-body="A motion study built around News Gothic for Project 3: pacing, hierarchy, and type on screen. The piece treats the face as the main character—scale shifts and camera-style moves sell the weight of the headline before the supporting lines resolve."
+        >
+          <span class="motion-mg-card__title">News Gothic Typography</span>
+          <span class="motion-mg-card__lead">Typography-forward motion: contrast, rhythm, and clean cuts built for a classroom brief.</span>
+        </button>
+        <button
+          type="button"
+          class="motion-mg-card"
+          data-video-src="../Works/Motion%20Graphics/Louie_Cole_Assignment2_MotivationalSpeech.mp4"
+          data-title="Warhammer40k — Motivational speech"
+          data-body="Assignment 2 pairs a Warhammer 40k–flavored motivational read with sound-driven edits. The goal was to keep legibility while pushing energy: hard cuts on beat, type that punches in, and a short arc that reads like a trailer sting rather than a long explainer."
+        >
+          <span class="motion-mg-card__title">Warhammer40k — Motivational speech</span>
+          <span class="motion-mg-card__lead">High-impact editorial motion: voice-led timing, bold type, and a dramatic read.</span>
+        </button>
+        <button
+          type="button"
+          class="motion-mg-card"
+          data-video-src="../Works/Motion%20Graphics/Text%20Motion%20Graphic.mp4"
+          data-title="Text Motion Graphic"
+          data-body="A kinetic type exploration where words are the only imagery. Transitions favor simplicity—slides, masks, and scale—so the message stays readable while the motion still feels playful. Good for title bumps, social stingers, or chapter breaks."
+        >
+          <span class="motion-mg-card__title">Text Motion Graphic</span>
+          <span class="motion-mg-card__lead">Pure type on screen: movement as meaning, without relying on illustration or live footage.</span>
+        </button>
+        <button
+          type="button"
+          class="motion-mg-card"
+          data-video-src="../Works/Motion%20Graphics/Graphic%20Logo%20pt2.mp4"
+          data-title="Graphic Logo Animation Plugin"
+          data-body="Part two of a logo animation workflow: building a mark that resolves cleanly on a short timeline. The edit focuses on settle frames, ease curves, and a simple plugin-style reveal so the logo feels tactile on a dark plate—ready for bumpers or end cards."
+        >
+          <span class="motion-mg-card__title">Graphic Logo Animation Plugin</span>
+          <span class="motion-mg-card__lead">Logo resolve and polish: ease, overlap, and a restrained glow for broadcast-style IDs.</span>
+        </button>
+      </div>
+    </div>
   </main>
+
+  <div
+    class="motion-mg-expand"
+    id="motion-expand"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="motion-expand-title"
+  >
+    <div class="motion-mg-expand__backdrop" data-motion-close></div>
+    <div class="motion-mg-expand__panel">
+      <button type="button" class="motion-mg-expand__close" data-motion-close aria-label="Close">×</button>
+      <h2 id="motion-expand-title" class="motion-mg-expand__title"></h2>
+      <div class="motion-mg-expand__grid">
+        <div class="motion-mg-expand__media">
+          <video class="motion-mg-expand__video" controls playsinline preload="metadata">
+            <source src="" type="video/mp4" />
+          </video>
+        </div>
+        <div class="motion-mg-expand__body" id="motion-expand-body"></div>
+      </div>
+    </div>
+  </div>
+
   <script src="../script.js"></script>
 </body>
 </html>
