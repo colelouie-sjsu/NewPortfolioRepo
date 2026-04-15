@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const video = motionExpand.querySelector(".motion-mg-expand__video");
     const source = video?.querySelector("source");
     const image = motionExpand.querySelector(".motion-mg-expand__image");
+    const secondaryImage = motionExpand.querySelector(".motion-mg-expand__image-secondary");
     const closeTriggers = motionExpand.querySelectorAll("[data-motion-close]");
     const closeBtn = motionExpand.querySelector(".motion-mg-expand__close");
     let openTimer = null;
@@ -24,6 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const openFromCard = (card) => {
       const src = card.getAttribute("data-media-src") || card.getAttribute("data-video-src");
+      const secondarySrc = card.getAttribute("data-secondary-src") || "";
+      const popupVariant = card.getAttribute("data-popup-variant") || "";
       const mediaType = card.getAttribute("data-media-type") || "video";
       const title = card.getAttribute("data-title") || "";
       const bodyText = card.getAttribute("data-body") || "";
@@ -35,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
       card.classList.add("motion-mg-card--opening");
 
       openTimer = setTimeout(() => {
+        motionExpand.classList.toggle("has-secondary-media", mediaType === "image" && Boolean(secondarySrc));
+        motionExpand.classList.toggle("is-merch-layout", popupVariant === "merch-stack");
         if (titleEl) titleEl.textContent = title;
         if (bodyEl) {
           bodyEl.innerHTML = "";
@@ -48,8 +53,22 @@ document.addEventListener("DOMContentLoaded", () => {
           image.removeAttribute("hidden");
           image.setAttribute("src", src || "");
           image.setAttribute("alt", title);
+          if (secondaryImage && secondarySrc) {
+            secondaryImage.removeAttribute("hidden");
+            secondaryImage.setAttribute("src", secondarySrc);
+            secondaryImage.setAttribute("alt", `${title} supporting graphic`);
+          } else if (secondaryImage) {
+            secondaryImage.setAttribute("hidden", "");
+            secondaryImage.removeAttribute("src");
+            secondaryImage.setAttribute("alt", "");
+          }
         } else if (video && source && src) {
           image?.setAttribute("hidden", "");
+          if (secondaryImage) {
+            secondaryImage.setAttribute("hidden", "");
+            secondaryImage.removeAttribute("src");
+            secondaryImage.setAttribute("alt", "");
+          }
           video.removeAttribute("hidden");
           video.pause();
           source.setAttribute("src", src);
@@ -78,6 +97,12 @@ document.addEventListener("DOMContentLoaded", () => {
         image.setAttribute("hidden", "");
         image.removeAttribute("src");
       }
+      if (secondaryImage) {
+        secondaryImage.setAttribute("hidden", "");
+        secondaryImage.removeAttribute("src");
+        secondaryImage.setAttribute("alt", "");
+      }
+      motionExpand.classList.remove("has-secondary-media", "is-merch-layout");
       document.body.style.overflow = "";
       closeTimer = setTimeout(() => {
         motionExpand.setAttribute("hidden", "");
