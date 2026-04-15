@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const bodyEl = document.getElementById("motion-expand-body");
     const video = motionExpand.querySelector(".motion-mg-expand__video");
     const source = video?.querySelector("source");
+    const image = motionExpand.querySelector(".motion-mg-expand__image");
     const closeTriggers = motionExpand.querySelectorAll("[data-motion-close]");
     const closeBtn = motionExpand.querySelector(".motion-mg-expand__close");
     let openTimer = null;
@@ -22,7 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let openerCard = null;
 
     const openFromCard = (card) => {
-      const src = card.getAttribute("data-video-src");
+      const src = card.getAttribute("data-media-src") || card.getAttribute("data-video-src");
+      const mediaType = card.getAttribute("data-media-type") || "video";
       const title = card.getAttribute("data-title") || "";
       const bodyText = card.getAttribute("data-body") || "";
 
@@ -40,7 +42,15 @@ document.addEventListener("DOMContentLoaded", () => {
           p.textContent = bodyText;
           bodyEl.appendChild(p);
         }
-        if (source && src) {
+        if (mediaType === "image" && image) {
+          video?.pause();
+          video?.setAttribute("hidden", "");
+          image.removeAttribute("hidden");
+          image.setAttribute("src", src || "");
+          image.setAttribute("alt", title);
+        } else if (video && source && src) {
+          image?.setAttribute("hidden", "");
+          video.removeAttribute("hidden");
           video.pause();
           source.setAttribute("src", src);
           video.load();
@@ -64,6 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       motionExpand.classList.remove("is-open");
       video?.pause();
+      if (image) {
+        image.setAttribute("hidden", "");
+        image.removeAttribute("src");
+      }
       document.body.style.overflow = "";
       closeTimer = setTimeout(() => {
         motionExpand.setAttribute("hidden", "");
