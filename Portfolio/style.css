@@ -71,15 +71,23 @@ body > * {
 }
 
 .nav-button {
+  appearance: none;
+  margin: 0;
+  cursor: pointer;
   background: #f5f5f5;
   color: #a31c2f;
-  text-decoration: none;
   font-family: Arial, sans-serif;
   font-size: 1.9rem;
   padding: 0.45rem 1.4rem;
   border: 2px solid rgba(255, 255, 255, 0.95);
   line-height: 1;
+  text-align: center;
   transition: opacity 0.45s ease;
+}
+
+.nav-button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.95);
+  outline-offset: 3px;
 }
 
 .site-title {
@@ -120,12 +128,12 @@ body > * {
 }
 
 .intro-logo {
-  width: min(94vw, 980px);
+  width: min(98vw, 1200px);
   display: block;
   margin: 0 auto;
   opacity: 0;
-  transform: scale(0.92);
-  transition: opacity 0.5s ease, transform 1.35s cubic-bezier(0.2, 0.75, 0.2, 1);
+  transform: scale(0.86);
+  transition: opacity 0.55s ease, transform 1.65s cubic-bezier(0.2, 0.75, 0.2, 1);
 }
 
 .intro-subtitle {
@@ -154,7 +162,7 @@ body.intro-active:not(.intro-exit):not(.intro-complete) .header-divider {
 
 body.intro-visible .intro-logo {
   opacity: 1;
-  transform: scale(1.03);
+  transform: scale(1.14);
 }
 
 body.intro-subtitle-visible .intro-subtitle {
@@ -162,11 +170,39 @@ body.intro-subtitle-visible .intro-subtitle {
   transform: translateY(0);
 }
 
+@keyframes intro-logo-exit {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1.14);
+  }
+  99.6% {
+    opacity: 1;
+    transform: translateY(-42vh) scale(0.48);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-42vh) scale(0.48);
+  }
+}
+
+@keyframes intro-logo-exit-mobile {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1.14);
+  }
+  99.6% {
+    opacity: 1;
+    transform: translateY(-42vh) scale(0.62);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-42vh) scale(0.62);
+  }
+}
+
 body.intro-exit .intro-logo {
-  transform: translateY(-42vh) scale(0.48);
-  opacity: 0.9;
-  transition-duration: 0.75s;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  transition: none;
+  animation: intro-logo-exit 0.75s forwards cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body.intro-exit .intro-subtitle {
@@ -441,6 +477,6 @@ body.intro-complete .intro-overlay {
   }
 
   body.intro-exit .intro-logo {
-    transform: translateY(-42vh) scale(0.62);
+    animation-name: intro-logo-exit-mobile;
   }
 }
