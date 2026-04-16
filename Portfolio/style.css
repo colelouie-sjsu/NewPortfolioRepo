@@ -74,6 +74,50 @@ body.page-home.home-theme-alt .nav-button {
   border-color: rgba(254, 220, 48, 0.95);
 }
 
+@keyframes home-glitch-overlay {
+  0% { opacity: 0; }
+  12% { opacity: 0.28; }
+  26% { opacity: 0.08; }
+  44% { opacity: 0.22; }
+  62% { opacity: 0.06; }
+  100% { opacity: 0; }
+}
+
+@keyframes home-glitch-shift {
+  0% { transform: translate(0, 0); }
+  18% { transform: translate(-2px, 1px); }
+  34% { transform: translate(2px, -1px); }
+  52% { transform: translate(-1px, -2px); }
+  76% { transform: translate(2px, 1px); }
+  100% { transform: translate(0, 0); }
+}
+
+body.page-home.home-theme-glitch::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(254, 220, 48, 0.16) 0,
+      rgba(254, 220, 48, 0.16) 2px,
+      rgba(35, 31, 32, 0.1) 2px,
+      rgba(35, 31, 32, 0.1) 4px
+    ),
+    linear-gradient(110deg, rgba(254, 220, 48, 0.22), rgba(35, 31, 32, 0.14));
+  animation: home-glitch-overlay 0.38s steps(2, end);
+}
+
+body.page-home.home-theme-glitch .site-header,
+body.page-home.home-theme-glitch .header-divider,
+body.page-home.home-theme-glitch .portfolio-layout {
+  animation: home-glitch-shift 0.22s steps(2, end) 2;
+}
+
 .site-header {
   position: relative;
   width: 100%;

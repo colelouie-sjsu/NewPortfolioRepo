@@ -4,9 +4,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (body.classList.contains("page-home")) {
     const headerLogo = document.querySelector(".site-header .site-title");
+    let homeGlitchTimer = null;
     if (headerLogo) {
       headerLogo.addEventListener("dblclick", () => {
         body.classList.toggle("home-theme-alt");
+        body.classList.remove("home-theme-glitch");
+        // Force restart of the glitch animation on every theme toggle.
+        void body.offsetWidth;
+        body.classList.add("home-theme-glitch");
+        if (homeGlitchTimer) {
+          clearTimeout(homeGlitchTimer);
+        }
+        homeGlitchTimer = setTimeout(() => {
+          body.classList.remove("home-theme-glitch");
+          homeGlitchTimer = null;
+        }, 380);
       });
     }
   }
