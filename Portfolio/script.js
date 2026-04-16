@@ -1,10 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
+  const introSkipKey = "skipIntroOnce";
 
   document.querySelectorAll("[data-href]").forEach((el) => {
     el.addEventListener("click", () => {
       const href = el.getAttribute("data-href");
-      if (href) window.location.assign(href);
+      if (!href) return;
+
+      const isReturnButton = el.classList.contains("motion-mg-return")
+        || el.classList.contains("project-detail__back");
+      const isIndexDestination = /(^|\/)\.\.\/index\.html$|(^|\/)index\.html$/.test(href);
+
+      if (isReturnButton && isIndexDestination) {
+        try {
+          sessionStorage.setItem(introSkipKey, "1");
+        } catch (e) {
+          // Ignore storage errors; navigation still works.
+        }
+      }
+
+      window.location.assign(href);
     });
   });
 
@@ -129,6 +144,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (!body.classList.contains("intro-active")) return;
+
+  try {
+    if (sessionStorage.getItem(introSkipKey) === "1") {
+      sessionStorage.removeItem(introSkipKey);
+      body.classList.add("intro-complete");
+      body.classList.remove("intro-active", "intro-visible", "intro-subtitle-visible", "intro-exit");
+      return;
+    }
+  } catch (e) {
+    // Ignore storage errors and fall back to normal intro behavior.
+  }
 
   // Intro sequence: reveal logo, fade subtitle, then shrink title into header.
   requestAnimationFrame(() => {
