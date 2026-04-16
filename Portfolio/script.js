@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeBtn = motionExpand.querySelector(".motion-mg-expand__close");
     let openTimer = null;
     let closeTimer = null;
+    let languageSwapTimer = null;
     let openerCard = null;
     let currentVariantClass = "";
     let isSecondaryAltMode = false;
@@ -52,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const secondaryLinkKo = card.getAttribute("data-secondary-link-ko") || "";
       const secondaryBadge = card.getAttribute("data-secondary-badge") || "";
       const secondaryBadgeAlt = card.getAttribute("data-secondary-badge-alt") || "";
+      const allowLanguageToggle = card.getAttribute("data-language-toggle") === "true";
       const popupVariant = card.getAttribute("data-popup-variant") || "";
       const mediaType = card.getAttribute("data-media-type") || "video";
       const title = card.getAttribute("data-title") || "";
@@ -60,7 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const ctaText = card.getAttribute("data-popup-cta") || "";
       const ctaTextKo = card.getAttribute("data-popup-cta-ko") || "";
       const srcKo = card.getAttribute("data-media-src-ko") || "";
-      const hasSecondaryLanguageToggle = Boolean(srcKo || secondarySrcKo || bodyTextKo || ctaTextKo);
+      const hasSecondaryLanguageToggle = allowLanguageToggle
+        && Boolean(srcKo || secondarySrcKo || bodyTextKo || ctaTextKo);
 
       // Skip opening when no media is configured for this tile.
       if (!src) return;
@@ -143,8 +146,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         isSecondaryAltMode = false;
         renderSecondaryLanguage = hasSecondaryLanguageToggle ? () => {
+          if (languageSwapTimer) return;
+          motionExpand.classList.add("is-language-swapping");
           isSecondaryAltMode = !isSecondaryAltMode;
-          renderContent(isSecondaryAltMode);
+          languageSwapTimer = setTimeout(() => {
+            renderContent(isSecondaryAltMode);
+            motionExpand.classList.remove("is-language-swapping");
+            languageSwapTimer = null;
+          }, 120);
         } : null;
         renderContent(false);
 
@@ -197,6 +206,11 @@ document.addEventListener("DOMContentLoaded", () => {
         secondaryImage.removeAttribute("src");
         secondaryImage.setAttribute("alt", "");
       }
+      if (languageSwapTimer) {
+        clearTimeout(languageSwapTimer);
+        languageSwapTimer = null;
+      }
+      motionExpand.classList.remove("is-language-swapping");
       renderSecondaryLanguage = null;
       isSecondaryAltMode = false;
       if (secondaryBadgeEl) {

@@ -885,6 +885,10 @@ body.page-motion-mg main.motion-mg-page {
   cursor: pointer;
 }
 
+.motion-mg-expand__image-secondary-badge[hidden] {
+  display: none !important;
+}
+
 .motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__panel {
   max-width: 1320px;
   max-height: calc(100vh - 3rem);
@@ -901,6 +905,22 @@ body.page-motion-mg main.motion-mg-page {
 
 .motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__body {
   margin-left: 0;
+}
+
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__image,
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__image-secondary-link,
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__body,
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__cta,
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__image-secondary-badge {
+  transition: opacity 0.12s ease;
+}
+
+.motion-mg-expand--poster.popup-variant-interactive-diagonal.is-language-swapping .motion-mg-expand__image,
+.motion-mg-expand--poster.popup-variant-interactive-diagonal.is-language-swapping .motion-mg-expand__image-secondary-link,
+.motion-mg-expand--poster.popup-variant-interactive-diagonal.is-language-swapping .motion-mg-expand__body,
+.motion-mg-expand--poster.popup-variant-interactive-diagonal.is-language-swapping .motion-mg-expand__cta,
+.motion-mg-expand--poster.popup-variant-interactive-diagonal.is-language-swapping .motion-mg-expand__image-secondary-badge {
+  opacity: 0.4;
 }
 
 .motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__image-secondary-badge {
