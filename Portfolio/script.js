@@ -57,6 +57,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const initialTab = tabButtons.find((tab) => tab.classList.contains("is-active")) || tabButtons[0];
     if (initialTab) activateTab(initialTab);
+
+    const miscImageViewer = document.getElementById("misc-image-viewer");
+    const miscImageViewerImg = document.getElementById("misc-image-viewer-img");
+    if (miscImageViewer && miscImageViewerImg) {
+      const galleryImages = [...miscTabsRoot.querySelectorAll(".misc-poster-gallery__item img")];
+
+      const openMiscImageViewer = (src, alt) => {
+        miscImageViewerImg.setAttribute("src", src);
+        miscImageViewerImg.setAttribute("alt", alt || "");
+        miscImageViewer.removeAttribute("hidden");
+        document.body.style.overflow = "hidden";
+      };
+
+      const closeMiscImageViewer = () => {
+        if (miscImageViewer.hasAttribute("hidden")) return;
+        miscImageViewer.setAttribute("hidden", "");
+        miscImageViewerImg.setAttribute("src", "");
+        miscImageViewerImg.setAttribute("alt", "");
+        document.body.style.overflow = "";
+      };
+
+      galleryImages.forEach((img) => {
+        img.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const src = img.getAttribute("src");
+          if (src) openMiscImageViewer(src, img.getAttribute("alt") || "");
+        });
+      });
+
+      miscImageViewer.querySelectorAll("[data-misc-image-close]").forEach((el) => {
+        el.addEventListener("click", () => closeMiscImageViewer());
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeMiscImageViewer();
+      });
+    }
   }
 
   const motionExpand = document.getElementById("motion-expand");
