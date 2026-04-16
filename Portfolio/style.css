@@ -46,32 +46,54 @@ body > * {
   z-index: 1;
 }
 
-/* Homepage-only alternate palette toggled by double-clicking the header logo. */
-body.page-home .site-header .site-title {
+/* Global alternate palette toggled by double-clicking the header logo. */
+body .site-header .site-title {
   cursor: pointer;
 }
 
-body.page-home.home-theme-alt {
+body.theme-alt-global {
   background-color: #231f20;
   color: #fedc30;
 }
 
-body.page-home.home-theme-alt .site-header {
+body.theme-alt-global .site-header {
   background-color: #231f20;
 }
 
-body.page-home.home-theme-alt .intro-overlay {
+body.theme-alt-global .intro-overlay {
   background-color: #231f20;
 }
 
-body.page-home.home-theme-alt .header-divider {
+body.theme-alt-global .header-divider {
   background-color: #fedc30;
 }
 
-body.page-home.home-theme-alt .nav-button {
+body.theme-alt-global .nav-button,
+body.theme-alt-global .motion-mg-return {
   background: #fedc30;
   color: #231f20;
   border-color: rgba(254, 220, 48, 0.95);
+}
+
+body.theme-alt-global.page-misc-posters {
+  --misc-bg: #231f20;
+  --misc-fg: #fedc30;
+  --misc-panel-bg: rgba(35, 31, 32, 0.8);
+  --misc-panel-border: rgba(254, 220, 48, 0.35);
+  --misc-tab-bg: #231f20;
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.16);
+  --misc-tab-border: rgba(255, 255, 255, 0.45);
+  --misc-tab-text: #fff;
+}
+
+body.theme-alt-global .motion-mg-card:nth-child(even) {
+  background: #231f20;
+  color: #fff;
+}
+
+body.theme-alt-global .ai-drop-tab:nth-child(even) .ai-drop-tab__summary {
+  background: #231f20;
+  color: #fff;
 }
 
 @keyframes home-glitch-overlay {
@@ -95,7 +117,7 @@ body.page-home.home-theme-alt .nav-button {
   100% { transform: translate(0, 0); }
 }
 
-body.page-home.home-theme-glitch::after {
+body.home-theme-glitch::after {
   content: "";
   position: fixed;
   inset: 0;
@@ -115,14 +137,15 @@ body.page-home.home-theme-glitch::after {
   animation: home-glitch-overlay 0.68s steps(3, end);
 }
 
-body.page-home.home-theme-glitch .site-header,
-body.page-home.home-theme-glitch .header-divider,
-body.page-home.home-theme-glitch .portfolio-layout {
+body.home-theme-glitch .site-header,
+body.home-theme-glitch .header-divider,
+body.home-theme-glitch .portfolio-layout {
   animation: home-glitch-shift 0.24s steps(2, end) 3;
 }
 
-body.page-home.home-theme-glitch .site-title,
-body.page-home.home-theme-glitch .nav-button {
+body.home-theme-glitch .site-title,
+body.home-theme-glitch .nav-button,
+body.home-theme-glitch .motion-mg-return {
   filter: saturate(1.35) contrast(1.15);
 }
 

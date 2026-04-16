@@ -1,26 +1,38 @@
 document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
   const introSkipKey = "skipIntroOnce";
+  const globalThemeStorageKey = "portfolioGlobalThemeAlt";
 
-  if (body.classList.contains("page-home")) {
-    const headerLogo = document.querySelector(".site-header .site-title");
-    let homeGlitchTimer = null;
-    if (headerLogo) {
-      headerLogo.addEventListener("dblclick", () => {
-        body.classList.toggle("home-theme-alt");
-        body.classList.remove("home-theme-glitch");
-        // Force restart of the glitch animation on every theme toggle.
-        void body.offsetWidth;
-        body.classList.add("home-theme-glitch");
-        if (homeGlitchTimer) {
-          clearTimeout(homeGlitchTimer);
-        }
-        homeGlitchTimer = setTimeout(() => {
-          body.classList.remove("home-theme-glitch");
-          homeGlitchTimer = null;
-        }, 680);
-      });
+  try {
+    if (localStorage.getItem(globalThemeStorageKey) === "1") {
+      body.classList.add("theme-alt-global");
     }
+  } catch (e) {
+    // Ignore storage read errors.
+  }
+
+  const headerLogo = document.querySelector(".site-header .site-title");
+  let homeGlitchTimer = null;
+  if (headerLogo) {
+    headerLogo.addEventListener("dblclick", () => {
+      const isAltEnabled = body.classList.toggle("theme-alt-global");
+      try {
+        localStorage.setItem(globalThemeStorageKey, isAltEnabled ? "1" : "0");
+      } catch (e) {
+        // Ignore storage write errors.
+      }
+      body.classList.remove("home-theme-glitch");
+      // Force restart of the glitch animation on every theme toggle.
+      void body.offsetWidth;
+      body.classList.add("home-theme-glitch");
+      if (homeGlitchTimer) {
+        clearTimeout(homeGlitchTimer);
+      }
+      homeGlitchTimer = setTimeout(() => {
+        body.classList.remove("home-theme-glitch");
+        homeGlitchTimer = null;
+      }, 680);
+    });
   }
 
   document.querySelectorAll("[data-href]").forEach((el) => {
