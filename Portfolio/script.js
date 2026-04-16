@@ -97,6 +97,79 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  if (body.classList.contains("page-vector-portraits")) {
+    const shuffleInPlace = (arr) => {
+      for (let i = arr.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
+    const tracks = [...document.querySelectorAll(".vector-scroll-bg__track")];
+    tracks.forEach((track) => {
+      const sets = [...track.querySelectorAll(".vector-scroll-bg__set")];
+      if (!sets.length) return;
+
+      const baseImages = [...sets[0].querySelectorAll("img")];
+      const shuffled = shuffleInPlace(baseImages.map((img) => ({
+        src: img.getAttribute("src") || "",
+        alt: img.getAttribute("alt") || "",
+      })));
+
+      sets.forEach((set) => {
+        const setImages = [...set.querySelectorAll("img")];
+        setImages.forEach((img, idx) => {
+          const item = shuffled[idx % shuffled.length];
+          img.setAttribute("src", item.src);
+          img.setAttribute("alt", item.alt);
+        });
+      });
+    });
+  }
+
+  const aiGalleryRoot = document.querySelector("[data-ai-gallery]");
+  if (aiGalleryRoot) {
+    const slides = [...aiGalleryRoot.querySelectorAll("[data-ai-slide]")].map((el) => ({
+      src: el.getAttribute("data-src") || "",
+      title: el.getAttribute("data-title") || "",
+      text: el.getAttribute("data-text") || "",
+    })).filter((slide) => Boolean(slide.src));
+
+    const imageEl = document.getElementById("ai-gallery-image");
+    const titleEl = document.getElementById("ai-gallery-title");
+    const textEl = document.getElementById("ai-gallery-text");
+    const navButtons = [...aiGalleryRoot.querySelectorAll("[data-ai-dir]")];
+    let currentIdx = 0;
+
+    const renderAiSlide = (idx) => {
+      if (!slides.length || !imageEl || !titleEl || !textEl) return;
+      const total = slides.length;
+      currentIdx = ((idx % total) + total) % total;
+      const slide = slides[currentIdx];
+
+      imageEl.setAttribute("src", slide.src);
+      imageEl.setAttribute("alt", slide.title || "AI artwork slide");
+      titleEl.textContent = slide.title;
+      textEl.textContent = slide.text;
+    };
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const step = Number(btn.getAttribute("data-ai-dir") || "0");
+        renderAiSlide(currentIdx + step);
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (!slides.length) return;
+      if (e.key === "ArrowLeft") renderAiSlide(currentIdx - 1);
+      if (e.key === "ArrowRight") renderAiSlide(currentIdx + 1);
+    });
+
+    renderAiSlide(0);
+  }
+
   const motionExpand = document.getElementById("motion-expand");
   if (motionExpand) {
     const cards = [...document.querySelectorAll(".motion-mg-card")];

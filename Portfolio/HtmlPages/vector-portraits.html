@@ -6,7 +6,45 @@
   <title>Vector Portraits — Cole Louie</title>
   <link rel="stylesheet" href="../style.css" />
 </head>
-<body>
+<body class="page-vector-portraits page-ai-artworks">
+  <div class="vector-scroll-bg" aria-hidden="true">
+    <div class="vector-scroll-bg__track vector-scroll-bg__track--forward">
+      <div class="vector-scroll-bg__set">
+        <img src="../Works/Vectors/TZUYU%201-01.png" alt="" />
+        <img src="../Works/Vectors/Vector%20Portrait.png" alt="" />
+        <img src="../Works/Vectors/Taka%202-01.png" alt="" />
+        <img src="../Works/Vectors/Rose%20Framing-01-01.png" alt="" />
+        <img src="../Works/Vectors/Jung%20Hoo%20poster-01.png" alt="" />
+        <img src="../Works/Vectors/Hyeseoung%20Kim-01-01.png" alt="" />
+      </div>
+      <div class="vector-scroll-bg__set">
+        <img src="../Works/Vectors/TZUYU%201-01.png" alt="" />
+        <img src="../Works/Vectors/Vector%20Portrait.png" alt="" />
+        <img src="../Works/Vectors/Taka%202-01.png" alt="" />
+        <img src="../Works/Vectors/Rose%20Framing-01-01.png" alt="" />
+        <img src="../Works/Vectors/Jung%20Hoo%20poster-01.png" alt="" />
+        <img src="../Works/Vectors/Hyeseoung%20Kim-01-01.png" alt="" />
+      </div>
+    </div>
+    <div class="vector-scroll-bg__track vector-scroll-bg__track--reverse">
+      <div class="vector-scroll-bg__set">
+        <img src="../Works/Vectors/Hyeseoung%20Kim-01-01.png" alt="" />
+        <img src="../Works/Vectors/Jung%20Hoo%20poster-01.png" alt="" />
+        <img src="../Works/Vectors/Rose%20Framing-01-01.png" alt="" />
+        <img src="../Works/Vectors/Taka%202-01.png" alt="" />
+        <img src="../Works/Vectors/Vector%20Portrait.png" alt="" />
+        <img src="../Works/Vectors/TZUYU%201-01.png" alt="" />
+      </div>
+      <div class="vector-scroll-bg__set">
+        <img src="../Works/Vectors/Hyeseoung%20Kim-01-01.png" alt="" />
+        <img src="../Works/Vectors/Jung%20Hoo%20poster-01.png" alt="" />
+        <img src="../Works/Vectors/Rose%20Framing-01-01.png" alt="" />
+        <img src="../Works/Vectors/Taka%202-01.png" alt="" />
+        <img src="../Works/Vectors/Vector%20Portrait.png" alt="" />
+        <img src="../Works/Vectors/TZUYU%201-01.png" alt="" />
+      </div>
+    </div>
+  </div>
   <header class="site-header">
     <nav class="top-nav">
       <button type="button" class="nav-button" data-href="contact.html">Contacts</button>
@@ -16,10 +54,57 @@
     <div class="header-divider" aria-hidden="true"></div>
   </header>
 
-  <main class="portfolio-layout project-detail">
-    <button type="button" class="nav-button project-detail__back" data-href="../index.html">← Portfolio</button>
-    <h1 class="project-detail__title">Vector Portraits</h1>
-    <p class="project-detail__lead">Project page for vector portrait work. Add process steps, Illustrator details, and exports here.</p>
+  <main class="portfolio-layout project-detail ai-gallery-page" data-ai-gallery>
+    <div class="ai-gallery">
+      <button type="button" class="ai-gallery__nav ai-gallery__nav--prev" data-ai-dir="-1" aria-label="Previous portrait">‹</button>
+      <div class="ai-gallery__image-wrap">
+        <img id="ai-gallery-image" class="ai-gallery__image" src="" alt="" />
+      </div>
+      <aside class="ai-gallery__text-wrap">
+        <h2 id="ai-gallery-title" class="ai-gallery__title"></h2>
+        <p id="ai-gallery-text" class="ai-gallery__text"></p>
+      </aside>
+      <button type="button" class="ai-gallery__nav ai-gallery__nav--next" data-ai-dir="1" aria-label="Next portrait">›</button>
+    </div>
+
+    <div class="ai-gallery__slides" hidden>
+      <article
+        data-ai-slide
+        data-src="../Works/Vectors/TZUYU%201-01.png"
+        data-title="TZUYU Portrait Study"
+        data-text="Vector portrait exploration emphasizing smooth tonal transitions and controlled edge detail."
+      ></article>
+      <article
+        data-ai-slide
+        data-src="../Works/Vectors/Vector%20Portrait.png"
+        data-title="Vector Portrait"
+        data-text="Core portrait piece built with layered shapes and color blocking to maintain clean readability."
+      ></article>
+      <article
+        data-ai-slide
+        data-src="../Works/Vectors/Taka%202-01.png"
+        data-title="Taka Portrait"
+        data-text="Character-focused vector work balancing expressive form with simplified geometric structure."
+      ></article>
+      <article
+        data-ai-slide
+        data-src="../Works/Vectors/Rose%20Framing-01-01.png"
+        data-title="Rose Framing Composition"
+        data-text="Framed vector composition with emphasis on silhouette, rhythm, and layered focal placement."
+      ></article>
+      <article
+        data-ai-slide
+        data-src="../Works/Vectors/Jung%20Hoo%20poster-01.png"
+        data-title="Jung Hoo Poster"
+        data-text="Poster-oriented vector design combining portrait detail and strong typography placement."
+      ></article>
+      <article
+        data-ai-slide
+        data-src="../Works/Vectors/Hyeseoung%20Kim-01-01.png"
+        data-title="Hyeseoung Kim Portrait"
+        data-text="Refined portrait render using crisp vector contours and selective contrast for depth."
+      ></article>
+    </div>
   </main>
   <script src="../script.js"></script>
 </body>

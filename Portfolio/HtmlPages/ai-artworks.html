@@ -6,7 +6,7 @@
   <title>A.I Artworks — Cole Louie</title>
   <link rel="stylesheet" href="../style.css" />
 </head>
-<body>
+<body class="page-ai-artworks">
   <header class="site-header">
     <nav class="top-nav">
       <button type="button" class="nav-button" data-href="contact.html">Contacts</button>
@@ -16,10 +16,49 @@
     <div class="header-divider" aria-hidden="true"></div>
   </header>
 
-  <main class="portfolio-layout project-detail">
+  <main class="portfolio-layout project-detail ai-gallery-page" data-ai-gallery>
     <button type="button" class="nav-button project-detail__back" data-href="../index.html">← Portfolio</button>
     <h1 class="project-detail__title">A.I Artworks</h1>
-    <p class="project-detail__lead">Project page for AI-assisted pieces. Add prompts, tools used, and final images or series here.</p>
+    <p class="project-detail__lead">A curated sequence of AI-assisted visual explorations. Use the side arrows to move through each piece and corresponding notes.</p>
+
+    <div class="ai-gallery">
+      <button type="button" class="ai-gallery__nav ai-gallery__nav--prev" data-ai-dir="-1" aria-label="Previous artwork">‹</button>
+      <div class="ai-gallery__image-wrap">
+        <img id="ai-gallery-image" class="ai-gallery__image" src="" alt="" />
+      </div>
+      <aside class="ai-gallery__text-wrap">
+        <h2 id="ai-gallery-title" class="ai-gallery__title"></h2>
+        <p id="ai-gallery-text" class="ai-gallery__text"></p>
+      </aside>
+      <button type="button" class="ai-gallery__nav ai-gallery__nav--next" data-ai-dir="1" aria-label="Next artwork">›</button>
+    </div>
+
+    <div class="ai-gallery__slides" hidden>
+      <article
+        data-ai-slide
+        data-src="../Bread%20Var_29.jpg"
+        data-title="Bread Series Study"
+        data-text="Texture-heavy concept exploration focused on stylized food composition. Built through iterative AI prompting and final curation for mood, form, and contrast."
+      ></article>
+      <article
+        data-ai-slide
+        data-src="../Works/Poster%20Design/Louie_Cole_Logoparody_Feb24-01-01.png"
+        data-title="Logo Parody Concept"
+        data-text="Character/logo reinterpretation developed with AI-assisted ideation. The final image emphasizes bold silhouette readability and controlled visual hierarchy."
+      ></article>
+      <article
+        data-ai-slide
+        data-src="../Works/Poster%20Design/batman%20redux.png"
+        data-title="Batman Redux"
+        data-text="Graphic collage experiment blending torn-paper aesthetics with cinematic character framing. AI-generated textures were remixed to push dramatic contrast."
+      ></article>
+      <article
+        data-ai-slide
+        data-src="../Works/Poster%20Design/superman%20redux.png"
+        data-title="Superman Redux"
+        data-text="Companion piece in the redux series, combining symbolic icon layering and color isolation. Prompt refinement centered on composition balance and focal control."
+      ></article>
+    </div>
   </main>
   <script src="../script.js"></script>
 </body>
