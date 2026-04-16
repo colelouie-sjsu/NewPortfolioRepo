@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         homeGlitchTimer = setTimeout(() => {
           body.classList.remove("home-theme-glitch");
           homeGlitchTimer = null;
-        }, 380);
+        }, 680);
       });
     }
   }
