@@ -6,7 +6,7 @@
   <title>Misc. Poster Designs — Cole Louie</title>
   <link rel="stylesheet" href="../style.css" />
 </head>
-<body>
+<body class="page-misc-posters misc-theme-red">
   <header class="site-header">
     <nav class="top-nav">
       <button type="button" class="nav-button" data-href="contact.html">Contacts</button>
@@ -16,10 +16,82 @@
     <div class="header-divider" aria-hidden="true"></div>
   </header>
 
-  <main class="portfolio-layout project-detail">
+  <main class="portfolio-layout project-detail misc-posters-page" data-misc-tabs>
     <button type="button" class="nav-button project-detail__back" data-href="../index.html">← Portfolio</button>
-    <h1 class="project-detail__title">Misc. Poster Designs</h1>
-    <p class="project-detail__lead">Project page for assorted poster work. Add a gallery or grid of pieces and short captions here.</p>
+    <div class="misc-posters-layout">
+      <aside class="misc-posters-menu" role="tablist" aria-label="Poster categories">
+        <button
+          type="button"
+          class="misc-posters-tab is-active"
+          role="tab"
+          aria-selected="true"
+          aria-controls="misc-panel-dvc"
+          data-misc-target="dvc"
+          data-misc-theme="red"
+        >
+          Diablo Valley College
+        </button>
+        <button
+          type="button"
+          class="misc-posters-tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="misc-panel-sjsu"
+          data-misc-target="sjsu"
+          data-misc-theme="light"
+        >
+          San Jose State University
+        </button>
+        <button
+          type="button"
+          class="misc-posters-tab"
+          role="tab"
+          aria-selected="false"
+          aria-controls="misc-panel-personal"
+          data-misc-target="personal"
+          data-misc-theme="dark"
+        >
+          Personal
+        </button>
+      </aside>
+
+      <section class="misc-posters-panels">
+        <article id="misc-panel-dvc" class="misc-posters-panel is-active" role="tabpanel" data-misc-panel="dvc">
+          <h1 class="project-detail__title">Diablo Valley College</h1>
+          <p class="project-detail__lead">Selected Diablo Valley College poster work.</p>
+          <div class="misc-poster-gallery" aria-label="Diablo Valley College posters">
+            <figure class="misc-poster-gallery__item">
+              <img src="../Works/Poster%20Design/Font%20Poster-01.jpg" alt="Doc Hattan font poster design" loading="lazy" />
+            </figure>
+            <figure class="misc-poster-gallery__item">
+              <img src="../Works/Poster%20Design/z1-01.png" alt="Frontlawns poster design" loading="lazy" />
+            </figure>
+            <figure class="misc-poster-gallery__item">
+              <img src="../Works/Poster%20Design/Louie_HowToPROJ_01.jpg" alt="How-to doodle hero poster design" loading="lazy" />
+            </figure>
+            <figure class="misc-poster-gallery__item">
+              <img src="../Works/Poster%20Design/Magic%20Poster%202.jpg" alt="Friday Night Magic draft poster design" loading="lazy" />
+            </figure>
+            <figure class="misc-poster-gallery__item">
+              <img src="../Works/Poster%20Design/Poster-Submission.jpg" alt="Poster idea draft design" loading="lazy" />
+            </figure>
+            <figure class="misc-poster-gallery__item">
+              <img src="../Works/Poster%20Design/Trade%20Poster%20FINAL.jpg" alt="Pokemon trade day poster design" loading="lazy" />
+            </figure>
+          </div>
+        </article>
+
+        <article id="misc-panel-sjsu" class="misc-posters-panel" role="tabpanel" data-misc-panel="sjsu" hidden>
+          <h1 class="project-detail__title">San Jose State University</h1>
+          <p class="project-detail__lead">White theme layout for San Jose State University work. Use this panel for selected pieces, captions, and supporting context.</p>
+        </article>
+
+        <article id="misc-panel-personal" class="misc-posters-panel" role="tabpanel" data-misc-panel="personal" hidden>
+          <h1 class="project-detail__title">Personal</h1>
+          <p class="project-detail__lead">Dark gray theme layout for personal poster explorations. Use this panel to showcase independent concepts and style experiments.</p>
+        </article>
+      </section>
+    </div>
   </main>
   <script src="../script.js"></script>
 </body>

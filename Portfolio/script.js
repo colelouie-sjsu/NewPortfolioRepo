@@ -23,6 +23,42 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  const miscTabsRoot = document.querySelector("[data-misc-tabs]");
+  if (miscTabsRoot) {
+    const tabButtons = [...miscTabsRoot.querySelectorAll("[data-misc-target]")];
+    const panels = [...miscTabsRoot.querySelectorAll("[data-misc-panel]")];
+    const themeClasses = ["misc-theme-red", "misc-theme-light", "misc-theme-dark"];
+
+    const activateTab = (button) => {
+      const target = button.getAttribute("data-misc-target");
+      const theme = button.getAttribute("data-misc-theme");
+
+      tabButtons.forEach((tab) => {
+        const isActive = tab === button;
+        tab.classList.toggle("is-active", isActive);
+        tab.setAttribute("aria-selected", isActive ? "true" : "false");
+      });
+
+      panels.forEach((panel) => {
+        const show = panel.getAttribute("data-misc-panel") === target;
+        panel.toggleAttribute("hidden", !show);
+        panel.classList.toggle("is-active", show);
+      });
+
+      if (theme) {
+        body.classList.remove(...themeClasses);
+        body.classList.add(`misc-theme-${theme}`);
+      }
+    };
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => activateTab(button));
+    });
+
+    const initialTab = tabButtons.find((tab) => tab.classList.contains("is-active")) || tabButtons[0];
+    if (initialTab) activateTab(initialTab);
+  }
+
   const motionExpand = document.getElementById("motion-expand");
   if (motionExpand) {
     const cards = [...document.querySelectorAll(".motion-mg-card")];

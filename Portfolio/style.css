@@ -581,6 +581,185 @@ body.intro-complete .intro-overlay {
   margin: 0;
 }
 
+/* Misc poster designs: left tabs + theme switching */
+body.page-misc-posters {
+  --misc-bg: #e82142;
+  --misc-fg: #ffffff;
+  --misc-panel-bg: rgba(255, 255, 255, 0.12);
+  --misc-panel-border: rgba(255, 255, 255, 0.3);
+  --misc-tab-bg: rgba(0, 0, 0, 0.16);
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.2);
+  --misc-tab-border: rgba(255, 255, 255, 0.4);
+  --misc-tab-text: #ffffff;
+  background-color: var(--misc-bg);
+  color: var(--misc-fg);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+body.page-misc-posters .site-header {
+  background-color: var(--misc-bg);
+  transition: background-color 0.25s ease;
+}
+
+body.page-misc-posters .site-title {
+  transition: filter 0.25s ease, opacity 0.45s ease;
+}
+
+body.page-misc-posters .header-divider {
+  background-color: color-mix(in srgb, var(--misc-fg) 82%, transparent);
+}
+
+body.page-misc-posters.misc-theme-red {
+  --misc-bg: #e82142;
+  --misc-fg: #ffffff;
+  --misc-panel-bg: rgba(255, 255, 255, 0.12);
+  --misc-panel-border: rgba(255, 255, 255, 0.3);
+  --misc-tab-bg: rgba(0, 0, 0, 0.16);
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.2);
+  --misc-tab-border: rgba(255, 255, 255, 0.4);
+  --misc-tab-text: #ffffff;
+}
+
+body.page-misc-posters.misc-theme-light {
+  --misc-bg: #f3f3f3;
+  --misc-fg: #151515;
+  --misc-panel-bg: rgba(255, 255, 255, 0.72);
+  --misc-panel-border: rgba(0, 0, 0, 0.2);
+  --misc-tab-bg: rgba(0, 0, 0, 0.06);
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.9);
+  --misc-tab-border: rgba(0, 0, 0, 0.3);
+  --misc-tab-text: #151515;
+}
+
+body.page-misc-posters.misc-theme-light .site-title {
+  filter: brightness(0) saturate(100%);
+}
+
+body.page-misc-posters.misc-theme-dark {
+  --misc-bg: #2f3238;
+  --misc-fg: #f2f2f2;
+  --misc-panel-bg: rgba(0, 0, 0, 0.26);
+  --misc-panel-border: rgba(255, 255, 255, 0.24);
+  --misc-tab-bg: rgba(255, 255, 255, 0.06);
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.15);
+  --misc-tab-border: rgba(255, 255, 255, 0.3);
+  --misc-tab-text: #f2f2f2;
+}
+
+.misc-posters-page .project-detail__title,
+.misc-posters-page .project-detail__lead {
+  color: var(--misc-fg);
+}
+
+.misc-posters-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: 1.35rem;
+  align-items: start;
+}
+
+.misc-posters-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.misc-posters-tab {
+  appearance: none;
+  width: 100%;
+  text-align: left;
+  padding: 0.95rem 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--misc-tab-border);
+  background: var(--misc-tab-bg);
+  color: var(--misc-tab-text);
+  font-family: Arial, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.misc-posters-tab:hover,
+.misc-posters-tab:focus-visible {
+  transform: translateX(2px);
+}
+
+.misc-posters-tab.is-active {
+  background: var(--misc-tab-bg-active);
+  border-color: color-mix(in srgb, var(--misc-fg) 46%, transparent);
+}
+
+.misc-posters-tab:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--misc-fg) 72%, transparent);
+  outline-offset: 2px;
+}
+
+.misc-posters-panels {
+  min-width: 0;
+}
+
+.misc-posters-panel {
+  background: var(--misc-panel-bg);
+  border: 1px solid var(--misc-panel-border);
+  border-radius: 10px;
+  padding: 1.3rem 1.35rem;
+}
+
+.misc-poster-gallery {
+  margin-top: 1.2rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.misc-poster-gallery__item {
+  margin: 0;
+  background: color-mix(in srgb, var(--misc-bg) 28%, #111);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--misc-fg) 30%, transparent);
+}
+
+.misc-poster-gallery__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 520px;
+  object-fit: cover;
+}
+
+.misc-posters-panel[hidden] {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .misc-posters-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .misc-posters-menu {
+    flex-direction: row;
+    overflow-x: auto;
+    padding-bottom: 0.3rem;
+  }
+
+  .misc-posters-tab {
+    min-width: 220px;
+  }
+
+  .misc-poster-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .misc-poster-gallery {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Motion graphic design — stacked scroll cards + expand overlay */
 body.page-motion-mg {
   min-height: 100vh;
