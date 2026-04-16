@@ -263,6 +263,42 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentVariantClass = "";
     let isSecondaryAltMode = false;
     let renderSecondaryLanguage = null;
+    const jsaImageViewer = document.getElementById("jsa-image-viewer");
+    const jsaImageViewerImg = document.getElementById("jsa-image-viewer-img");
+    const isJsaPostersPage = body.classList.contains("page-jsa-posters");
+
+    const openJsaImageViewer = (src, altText) => {
+      if (!isJsaPostersPage || !jsaImageViewer || !jsaImageViewerImg || !src) return;
+      jsaImageViewerImg.setAttribute("src", src);
+      jsaImageViewerImg.setAttribute("alt", altText || "");
+      jsaImageViewer.removeAttribute("hidden");
+    };
+
+    const closeJsaImageViewer = () => {
+      if (!jsaImageViewer || jsaImageViewer.hasAttribute("hidden")) return;
+      jsaImageViewer.setAttribute("hidden", "");
+      if (jsaImageViewerImg) {
+        jsaImageViewerImg.setAttribute("src", "");
+        jsaImageViewerImg.setAttribute("alt", "");
+      }
+    };
+
+    if (isJsaPostersPage && jsaImageViewer && jsaImageViewerImg) {
+      [image, secondaryImage].forEach((imgEl) => {
+        if (!imgEl) return;
+        imgEl.addEventListener("click", (event) => {
+          if (imgEl.hasAttribute("hidden")) return;
+          event.preventDefault();
+          const src = imgEl.getAttribute("src") || "";
+          const altText = imgEl.getAttribute("alt") || "";
+          openJsaImageViewer(src, altText);
+        });
+      });
+
+      jsaImageViewer.querySelectorAll("[data-jsa-image-close]").forEach((el) => {
+        el.addEventListener("click", () => closeJsaImageViewer());
+      });
+    }
 
     cards.forEach((card) => {
       const cardImageSrc = card.getAttribute("data-media-src");
@@ -417,6 +453,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const closeExpand = () => {
       if (!motionExpand.classList.contains("is-open") && motionExpand.hasAttribute("hidden")) return;
+      closeJsaImageViewer();
       if (openTimer) {
         clearTimeout(openTimer);
         openTimer = null;
@@ -480,6 +517,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && jsaImageViewer && !jsaImageViewer.hasAttribute("hidden")) {
+        closeJsaImageViewer();
+        return;
+      }
       if (e.key === "Escape" && motionExpand.classList.contains("is-open")) {
         closeExpand();
       }

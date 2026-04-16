@@ -1773,6 +1773,11 @@ body.page-jsa-posters .motion-mg-card__lead {
   display: none;
 }
 
+body.page-jsa-posters .motion-mg-expand__image,
+body.page-jsa-posters .motion-mg-expand__image-secondary {
+  cursor: zoom-in;
+}
+
 .motion-mg-expand__body {
   font-family: Arial, sans-serif;
   font-size: clamp(0.95rem, 1.8vw, 1.1rem);
