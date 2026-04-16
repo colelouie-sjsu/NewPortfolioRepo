@@ -255,6 +255,13 @@ document.addEventListener("DOMContentLoaded", () => {
     let isSecondaryAltMode = false;
     let renderSecondaryLanguage = null;
 
+    cards.forEach((card) => {
+      const cardImageSrc = card.getAttribute("data-media-src");
+      if (cardImageSrc && card.getAttribute("data-media-type") === "image") {
+        card.style.setProperty("--card-thumb", `url("${cardImageSrc}")`);
+      }
+    });
+
     const openFromCard = (card) => {
       const src = card.getAttribute("data-media-src") || card.getAttribute("data-video-src");
       const secondarySrc = card.getAttribute("data-secondary-src") || "";
