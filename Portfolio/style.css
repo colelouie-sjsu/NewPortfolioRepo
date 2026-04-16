@@ -1297,7 +1297,7 @@ body.page-motion-mg main.motion-mg-page {
   cursor: pointer;
   text-align: left;
   overflow: hidden;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  box-shadow: none;
   transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
   scroll-snap-align: start;
 }
@@ -1319,13 +1319,13 @@ body.page-motion-mg main.motion-mg-page {
 .motion-mg-card:hover,
 .motion-mg-card:focus-visible {
   transform: translateY(-3px);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
+  box-shadow: none;
   z-index: 2;
 }
 
 .motion-mg-card.motion-mg-card--opening {
   transform: scale(0.988);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.42);
+  box-shadow: none;
   filter: brightness(0.98);
 }
 
@@ -1367,16 +1367,17 @@ body.page-jsa-posters .motion-mg-card {
 body.page-jsa-posters .motion-mg-card::after {
   content: "";
   position: absolute;
-  top: 8px;
+  top: auto;
   right: 8px;
-  bottom: 8px;
-  width: clamp(64px, 9.5vw, 120px);
+  bottom: 15px;
+  height: clamp(72px, 43%, 134px);
+  width: clamp(68px, 10.1vw, 126px);
   background-image: var(--card-thumb);
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: top center;
   background-repeat: no-repeat;
-  border-radius: 6px 0 0 6px;
-  box-shadow: -8px 0 14px rgba(0, 0, 0, 0.25);
+  border-radius: 6px 0 0 0;
+  box-shadow: none;
   pointer-events: none;
   opacity: 0.95;
 }
@@ -1406,10 +1407,11 @@ body.page-jsa-posters .motion-mg-card__lead {
   }
 
   body.page-jsa-posters .motion-mg-card::after {
-    width: clamp(56px, 17vw, 82px);
-    top: 6px;
+    width: clamp(60px, 18vw, 88px);
+    height: clamp(62px, 35%, 94px);
+    top: auto;
     right: 6px;
-    bottom: 6px;
+    bottom: 13px;
   }
 }
 
