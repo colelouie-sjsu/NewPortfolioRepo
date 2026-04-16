@@ -590,6 +590,83 @@ body.page-ai-artworks {
   max-width: 1500px;
 }
 
+/* AI artworks dropdown tab format */
+.ai-dropdown-page .motion-mg-list {
+  padding-top: 1.1rem;
+}
+
+.ai-drop-tab {
+  margin: 0;
+}
+
+.ai-drop-tab__summary {
+  list-style: none;
+}
+
+.ai-drop-tab__summary::-webkit-details-marker {
+  display: none;
+}
+
+.ai-drop-tab:nth-child(odd) .ai-drop-tab__summary {
+  background: #e8e6e1;
+  color: #121212;
+}
+
+.ai-drop-tab:nth-child(even) .ai-drop-tab__summary {
+  background: #e82142;
+  color: #fff;
+}
+
+.ai-drop-tab[open] .ai-drop-tab__summary {
+  box-shadow: 0 14px 42px rgba(0, 0, 0, 0.44);
+}
+
+.ai-drop-tab__content {
+  margin-top: 0.22rem;
+  margin-bottom: 0.85rem;
+  padding: 1rem 1rem 1.15rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.24);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.ai-drop-tab[open] .ai-drop-tab__content {
+  max-height: none;
+  opacity: 1;
+  overflow: visible;
+}
+
+.ai-drop-tab__textbox {
+  margin: 0 0 0.85rem;
+  font-family: Arial, sans-serif;
+  font-size: 1.03rem;
+  line-height: 1.55;
+}
+
+.ai-drop-tab__grid {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.ai-drop-tab__grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ai-drop-tab__grid--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.ai-drop-tab__grid img {
+  display: block;
+  width: 100%;
+  height: min(46vh, 420px);
+  object-fit: cover;
+  border-radius: 6px;
+}
+
 body.page-vector-portraits .ai-gallery-page {
   padding-top: 0.55rem;
   padding-bottom: 0.9rem;
@@ -713,6 +790,11 @@ body.page-vector-portraits .ai-gallery__text {
 }
 
 @media (max-width: 980px) {
+  .ai-drop-tab__grid--three,
+  .ai-drop-tab__grid--four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .ai-gallery {
     grid-template-columns: 1fr;
   }
@@ -723,6 +805,13 @@ body.page-vector-portraits .ai-gallery__text {
 
   .ai-gallery__text-wrap {
     min-height: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .ai-drop-tab__grid--three,
+  .ai-drop-tab__grid--four {
+    grid-template-columns: 1fr;
   }
 }
 

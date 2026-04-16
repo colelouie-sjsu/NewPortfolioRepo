@@ -128,6 +128,69 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const aiDropTabs = [...document.querySelectorAll(".ai-drop-tab")];
+  if (aiDropTabs.length) {
+    const transitionTiming = "max-height 0.42s ease, opacity 0.28s ease";
+
+    aiDropTabs.forEach((tab) => {
+      const summary = tab.querySelector(".ai-drop-tab__summary");
+      const content = tab.querySelector(".ai-drop-tab__content");
+      if (!summary || !content) return;
+
+      if (!tab.open) {
+        content.style.maxHeight = "0px";
+        content.style.opacity = "0";
+      }
+
+      summary.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (tab.classList.contains("is-animating")) return;
+
+        const isOpening = !tab.open;
+        tab.classList.add("is-animating");
+        content.style.overflow = "hidden";
+        content.style.transition = transitionTiming;
+
+        if (isOpening) {
+          tab.open = true;
+          content.style.maxHeight = "0px";
+          content.style.opacity = "0";
+          requestAnimationFrame(() => {
+            content.style.maxHeight = `${content.scrollHeight}px`;
+            content.style.opacity = "1";
+          });
+        } else {
+          content.style.maxHeight = `${content.scrollHeight}px`;
+          content.style.opacity = "1";
+          requestAnimationFrame(() => {
+            content.style.maxHeight = "0px";
+            content.style.opacity = "0";
+          });
+        }
+
+        const onTransitionEnd = (event) => {
+          if (event.propertyName !== "max-height") return;
+          content.removeEventListener("transitionend", onTransitionEnd);
+          tab.classList.remove("is-animating");
+
+          if (!isOpening) {
+            tab.open = false;
+          } else {
+            content.style.maxHeight = "";
+          }
+
+          content.style.transition = "";
+          content.style.overflow = "";
+          if (tab.open) {
+            content.style.opacity = "";
+          }
+        };
+
+        content.addEventListener("transitionend", onTransitionEnd);
+      });
+    });
+  }
+
   const aiGalleryRoot = document.querySelector("[data-ai-gallery]");
   if (aiGalleryRoot) {
     const slides = [...aiGalleryRoot.querySelectorAll("[data-ai-slide]")].map((el) => ({
