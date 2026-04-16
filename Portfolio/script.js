@@ -28,23 +28,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const cards = [...document.querySelectorAll(".motion-mg-card")];
     const titleEl = document.getElementById("motion-expand-title");
     const bodyEl = document.getElementById("motion-expand-body");
+    const ctaEl = document.getElementById("motion-expand-cta");
     const video = motionExpand.querySelector(".motion-mg-expand__video");
     const source = video?.querySelector("source");
     const image = motionExpand.querySelector(".motion-mg-expand__image");
     const secondaryImage = motionExpand.querySelector(".motion-mg-expand__image-secondary");
+    const secondaryImageLink = motionExpand.querySelector(".motion-mg-expand__image-secondary-link");
+    const secondaryBadgeEl = motionExpand.querySelector("#motion-expand-secondary-badge");
     const closeTriggers = motionExpand.querySelectorAll("[data-motion-close]");
     const closeBtn = motionExpand.querySelector(".motion-mg-expand__close");
     let openTimer = null;
     let closeTimer = null;
     let openerCard = null;
+    let currentVariantClass = "";
+    let isSecondaryAltMode = false;
+    let renderSecondaryLanguage = null;
 
     const openFromCard = (card) => {
       const src = card.getAttribute("data-media-src") || card.getAttribute("data-video-src");
       const secondarySrc = card.getAttribute("data-secondary-src") || "";
+      const secondaryLink = card.getAttribute("data-secondary-link") || "";
+      const secondarySrcKo = card.getAttribute("data-secondary-src-ko") || "";
+      const secondaryLinkKo = card.getAttribute("data-secondary-link-ko") || "";
+      const secondaryBadge = card.getAttribute("data-secondary-badge") || "";
+      const secondaryBadgeAlt = card.getAttribute("data-secondary-badge-alt") || "";
       const popupVariant = card.getAttribute("data-popup-variant") || "";
       const mediaType = card.getAttribute("data-media-type") || "video";
       const title = card.getAttribute("data-title") || "";
       const bodyText = card.getAttribute("data-body") || "";
+      const bodyTextKo = card.getAttribute("data-body-ko") || "";
+      const ctaText = card.getAttribute("data-popup-cta") || "";
+      const ctaTextKo = card.getAttribute("data-popup-cta-ko") || "";
+      const srcKo = card.getAttribute("data-media-src-ko") || "";
+      const hasSecondaryLanguageToggle = Boolean(srcKo || secondarySrcKo || bodyTextKo || ctaTextKo);
+
+      // Skip opening when no media is configured for this tile.
+      if (!src) return;
 
       if (closeTimer) {
         clearTimeout(closeTimer);
@@ -53,30 +72,84 @@ document.addEventListener("DOMContentLoaded", () => {
       card.classList.add("motion-mg-card--opening");
 
       openTimer = setTimeout(() => {
+        if (currentVariantClass) {
+          motionExpand.classList.remove(currentVariantClass);
+          currentVariantClass = "";
+        }
+        if (popupVariant) {
+          currentVariantClass = `popup-variant-${popupVariant.replace(/[^a-z0-9-]/gi, "").toLowerCase()}`;
+          motionExpand.classList.add(currentVariantClass);
+        }
         motionExpand.classList.toggle("has-secondary-media", mediaType === "image" && Boolean(secondarySrc));
         motionExpand.classList.toggle("is-merch-layout", popupVariant === "merch-stack");
         if (titleEl) titleEl.textContent = title;
-        if (bodyEl) {
-          bodyEl.innerHTML = "";
-          const p = document.createElement("p");
-          p.textContent = bodyText;
-          bodyEl.appendChild(p);
-        }
-        if (mediaType === "image" && image) {
-          video?.pause();
-          video?.setAttribute("hidden", "");
-          image.removeAttribute("hidden");
-          image.setAttribute("src", src || "");
-          image.setAttribute("alt", title);
-          if (secondaryImage && secondarySrc) {
-            secondaryImage.removeAttribute("hidden");
-            secondaryImage.setAttribute("src", secondarySrc);
-            secondaryImage.setAttribute("alt", `${title} supporting graphic`);
-          } else if (secondaryImage) {
-            secondaryImage.setAttribute("hidden", "");
-            secondaryImage.removeAttribute("src");
-            secondaryImage.setAttribute("alt", "");
+        const renderContent = (useSecondaryLanguage = false) => {
+          const currentSrc = useSecondaryLanguage && srcKo ? srcKo : src;
+          const currentSecondarySrc = useSecondaryLanguage && secondarySrcKo ? secondarySrcKo : secondarySrc;
+          const currentSecondaryLink = useSecondaryLanguage && secondaryLinkKo ? secondaryLinkKo : secondaryLink;
+          const currentBodyText = useSecondaryLanguage && bodyTextKo ? bodyTextKo : bodyText;
+          const currentCtaText = useSecondaryLanguage && ctaTextKo ? ctaTextKo : ctaText;
+          const currentBadgeText = useSecondaryLanguage ? (secondaryBadgeAlt || "English") : secondaryBadge;
+
+          if (bodyEl) {
+            bodyEl.innerHTML = "";
+            const p = document.createElement("p");
+            p.textContent = currentBodyText;
+            bodyEl.appendChild(p);
           }
+          if (ctaEl) {
+            if (currentCtaText) {
+              ctaEl.textContent = currentCtaText;
+              ctaEl.removeAttribute("hidden");
+            } else {
+              ctaEl.textContent = "";
+              ctaEl.setAttribute("hidden", "");
+            }
+          }
+          if (mediaType === "image" && image) {
+            video?.pause();
+            video?.setAttribute("hidden", "");
+            image.removeAttribute("hidden");
+            image.setAttribute("src", currentSrc || "");
+            image.setAttribute("alt", title);
+            if (secondaryImage && currentSecondarySrc) {
+              secondaryImage.removeAttribute("hidden");
+              secondaryImage.setAttribute("src", currentSecondarySrc);
+              secondaryImage.setAttribute("alt", `${title} supporting graphic`);
+              if (secondaryImageLink) {
+                if (currentSecondaryLink) {
+                  secondaryImageLink.setAttribute("href", currentSecondaryLink);
+                } else {
+                  secondaryImageLink.removeAttribute("href");
+                }
+              }
+            } else if (secondaryImage) {
+              secondaryImage.setAttribute("hidden", "");
+              secondaryImage.removeAttribute("src");
+              secondaryImage.setAttribute("alt", "");
+              secondaryImageLink?.removeAttribute("href");
+            }
+          }
+          if (secondaryBadgeEl) {
+            if (currentBadgeText && hasSecondaryLanguageToggle) {
+              secondaryBadgeEl.textContent = currentBadgeText;
+              secondaryBadgeEl.removeAttribute("hidden");
+            } else {
+              secondaryBadgeEl.textContent = "";
+              secondaryBadgeEl.setAttribute("hidden", "");
+            }
+          }
+        };
+
+        isSecondaryAltMode = false;
+        renderSecondaryLanguage = hasSecondaryLanguageToggle ? () => {
+          isSecondaryAltMode = !isSecondaryAltMode;
+          renderContent(isSecondaryAltMode);
+        } : null;
+        renderContent(false);
+
+        if (mediaType === "image" && image) {
+          // image content is handled by renderContent()
         } else if (video && source && src) {
           image?.setAttribute("hidden", "");
           if (secondaryImage) {
@@ -84,6 +157,13 @@ document.addEventListener("DOMContentLoaded", () => {
             secondaryImage.removeAttribute("src");
             secondaryImage.setAttribute("alt", "");
           }
+          if (secondaryBadgeEl) {
+            secondaryBadgeEl.textContent = "";
+            secondaryBadgeEl.setAttribute("hidden", "");
+          }
+          renderSecondaryLanguage = null;
+          isSecondaryAltMode = false;
+          secondaryImageLink?.removeAttribute("href");
           video.removeAttribute("hidden");
           video.pause();
           source.setAttribute("src", src);
@@ -117,7 +197,22 @@ document.addEventListener("DOMContentLoaded", () => {
         secondaryImage.removeAttribute("src");
         secondaryImage.setAttribute("alt", "");
       }
+      renderSecondaryLanguage = null;
+      isSecondaryAltMode = false;
+      if (secondaryBadgeEl) {
+        secondaryBadgeEl.textContent = "";
+        secondaryBadgeEl.setAttribute("hidden", "");
+      }
+      secondaryImageLink?.removeAttribute("href");
+      if (ctaEl) {
+        ctaEl.textContent = "";
+        ctaEl.setAttribute("hidden", "");
+      }
       motionExpand.classList.remove("has-secondary-media", "is-merch-layout");
+      if (currentVariantClass) {
+        motionExpand.classList.remove(currentVariantClass);
+        currentVariantClass = "";
+      }
       document.body.style.overflow = "";
       closeTimer = setTimeout(() => {
         motionExpand.setAttribute("hidden", "");
@@ -130,6 +225,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cards.forEach((card) => {
       card.addEventListener("click", () => openFromCard(card));
+    });
+
+    secondaryBadgeEl?.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (renderSecondaryLanguage) {
+        renderSecondaryLanguage();
+      }
     });
 
     closeTriggers.forEach((el) => {

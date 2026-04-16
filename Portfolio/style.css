@@ -836,6 +836,80 @@ body.page-motion-mg main.motion-mg-page {
   max-width: min(100%, 540px);
 }
 
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__media {
+  margin-left: 34px;
+}
+
+.motion-mg-expand--poster.popup-variant-interactive-diagonal.has-secondary-media .motion-mg-expand__image {
+  max-width: min(100%, 540px);
+  border: none;
+  background: transparent;
+}
+
+.motion-mg-expand--poster.popup-variant-interactive-diagonal.has-secondary-media .motion-mg-expand__image-secondary {
+  position: static;
+  width: 100%;
+  max-width: none;
+  transform: rotate(-1.5deg);
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.motion-mg-expand--poster.popup-variant-interactive-diagonal.has-secondary-media .motion-mg-expand__image-secondary-link {
+  position: absolute;
+  right: -4px;
+  bottom: -58px;
+  width: min(44%, 220px);
+  max-width: 220px;
+  text-decoration: none;
+  display: block;
+  line-height: 0;
+}
+
+.motion-mg-expand__image-secondary-badge {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.76rem 1.8rem;
+  border-radius: 999px;
+  border: 1px solid #111;
+  background: rgba(255, 255, 255, 0.96);
+  color: #111;
+  font-family: Arial, sans-serif;
+  font-size: 1.76rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__panel {
+  max-width: 1320px;
+  max-height: calc(100vh - 3rem);
+  min-height: min(70vh, 700px);
+  margin-top: 0.9rem;
+  margin-bottom: 0.9rem;
+  padding: 2.2rem 2.4rem 2.1rem;
+}
+
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2.1rem;
+}
+
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__body {
+  margin-left: 0;
+}
+
+.motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__image-secondary-badge {
+  grid-column: 2;
+  grid-row: 2;
+  justify-self: center;
+  margin-top: 0.2rem;
+}
+
 .motion-mg-expand--poster.is-merch-layout.has-secondary-media .motion-mg-expand__grid {
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 1.1rem;
@@ -885,6 +959,27 @@ body.page-motion-mg main.motion-mg-page {
     margin: 0.75rem 0 0;
     transform: translateX(-38px);
   }
+
+  .motion-mg-expand--poster.popup-variant-interactive-diagonal.has-secondary-media .motion-mg-expand__image-secondary {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .motion-mg-expand--poster.popup-variant-interactive-diagonal.has-secondary-media .motion-mg-expand__image-secondary-link {
+    position: static;
+    width: min(48vw, 210px);
+    max-width: 210px;
+    margin: 0.9rem 0 0 auto;
+  }
+
+  .motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__image-secondary-badge {
+    grid-column: 1;
+    grid-row: auto;
+    margin: 0.15rem auto 0;
+  }
 }
 
 .motion-mg-expand__media {
@@ -930,6 +1025,17 @@ body.page-motion-mg main.motion-mg-page {
 
 .motion-mg-expand__body p:last-child {
   margin-bottom: 0;
+}
+
+.motion-mg-expand__cta {
+  margin: auto 0 0;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  color: #111;
 }
 
 .motion-mg-return {
