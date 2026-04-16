@@ -1133,6 +1133,24 @@ body.page-misc-posters.misc-theme-dark {
   --misc-tab-text: #f2f2f2;
 }
 
+/* Global logo-toggle theme should override per-tab misc themes. */
+body.theme-alt-global.page-misc-posters.misc-theme-red,
+body.theme-alt-global.page-misc-posters.misc-theme-light,
+body.theme-alt-global.page-misc-posters.misc-theme-dark {
+  --misc-bg: #231f20;
+  --misc-fg: #fff;
+  --misc-panel-bg: rgba(35, 31, 32, 0.8);
+  --misc-panel-border: rgba(255, 255, 255, 0.28);
+  --misc-tab-bg: #231f20;
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.16);
+  --misc-tab-border: rgba(255, 255, 255, 0.45);
+  --misc-tab-text: #fff;
+}
+
+body.theme-alt-global.page-misc-posters .site-title {
+  filter: none;
+}
+
 .misc-posters-page .project-detail__title,
 .misc-posters-page .project-detail__lead {
   color: var(--misc-fg);
