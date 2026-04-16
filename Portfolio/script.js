@@ -2,6 +2,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
   const introSkipKey = "skipIntroOnce";
 
+  if (body.classList.contains("page-home")) {
+    const headerLogo = document.querySelector(".site-header .site-title");
+    if (headerLogo) {
+      headerLogo.addEventListener("dblclick", () => {
+        body.classList.toggle("home-theme-alt");
+      });
+    }
+  }
+
   document.querySelectorAll("[data-href]").forEach((el) => {
     el.addEventListener("click", () => {
       const href = el.getAttribute("data-href");

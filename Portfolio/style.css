@@ -46,6 +46,34 @@ body > * {
   z-index: 1;
 }
 
+/* Homepage-only alternate palette toggled by double-clicking the header logo. */
+body.page-home .site-header .site-title {
+  cursor: pointer;
+}
+
+body.page-home.home-theme-alt {
+  background-color: #231f20;
+  color: #fedc30;
+}
+
+body.page-home.home-theme-alt .site-header {
+  background-color: #231f20;
+}
+
+body.page-home.home-theme-alt .intro-overlay {
+  background-color: #231f20;
+}
+
+body.page-home.home-theme-alt .header-divider {
+  background-color: #fedc30;
+}
+
+body.page-home.home-theme-alt .nav-button {
+  background: #fedc30;
+  color: #231f20;
+  border-color: rgba(254, 220, 48, 0.95);
+}
+
 .site-header {
   position: relative;
   width: 100%;
