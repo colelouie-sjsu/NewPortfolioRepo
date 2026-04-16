@@ -112,12 +112,31 @@ document.addEventListener("DOMContentLoaded", () => {
       };
 
       galleryImages.forEach((img) => {
+        const linkedAnchor = img.closest(".misc-poster-gallery__link");
+
         img.addEventListener("click", (e) => {
+          if (linkedAnchor) return;
           e.preventDefault();
           e.stopPropagation();
           const src = img.getAttribute("src");
           if (src) openMiscImageViewer(src, img.getAttribute("alt") || "");
         });
+
+        if (linkedAnchor) {
+          img.addEventListener("dblclick", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeMiscImageViewer();
+            const href = linkedAnchor.getAttribute("href");
+            if (!href) return;
+            const target = linkedAnchor.getAttribute("target") || "_self";
+            if (target === "_blank") {
+              window.open(href, "_blank", "noopener,noreferrer");
+              return;
+            }
+            window.location.assign(href);
+          });
+        }
       });
 
       miscImageViewer.querySelectorAll("[data-misc-image-close]").forEach((el) => {
