@@ -713,6 +713,7 @@ body.intro-complete .intro-overlay {
 
 .about-layout__photo-wrap {
   margin: 0;
+  position: relative;
 }
 
 .about-layout__photo {
@@ -720,9 +721,23 @@ body.intro-complete .intro-overlay {
   width: 100%;
   height: min(76vh, 900px);
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 0;
   border: 2px solid rgba(255, 255, 255, 0.56);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.42);
+}
+
+.about-layout__photo-inset {
+  position: absolute;
+  right: clamp(0.45rem, 1.8vw, 0.95rem);
+  bottom: clamp(0.45rem, 1.8vw, 0.95rem);
+  width: clamp(8.5rem, 32vw, 15rem);
+  height: clamp(8.5rem, 32vw, 15rem);
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0;
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
 
 .about-layout__content {
@@ -1696,6 +1711,10 @@ body.page-jsa-posters .motion-mg-card__lead {
 .motion-mg-expand__close:hover {
   background: #e8e6e1;
   transform: scale(1.03);
+}
+
+body.page-jsa-posters .motion-mg-expand__title {
+  padding-right: 0;
 }
 
 .motion-mg-expand__title {

@@ -528,7 +528,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = "hidden";
         openerCard = card;
         card.classList.remove("motion-mg-card--opening");
-        closeBtn?.focus();
+        if (closeBtn) {
+          closeBtn.focus();
+        } else if (titleEl) {
+          titleEl.setAttribute("tabindex", "-1");
+          titleEl.focus();
+        }
       }, 120);
     };
 
