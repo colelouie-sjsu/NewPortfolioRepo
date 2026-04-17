@@ -287,12 +287,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const motionExpand = document.getElementById("motion-expand");
   if (motionExpand) {
+    const extractYouTubeVideoId = (url) => {
+      if (!url) return "";
+      const trimmedUrl = url.trim();
+      const idPatterns = [
+        /(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,
+        /(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
+        /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+        /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+      ];
+
+      for (const pattern of idPatterns) {
+        const match = trimmedUrl.match(pattern);
+        if (match?.[1]) return match[1];
+      }
+      return "";
+    };
+
     const cards = [...document.querySelectorAll(".motion-mg-card")];
     const titleEl = document.getElementById("motion-expand-title");
     const bodyEl = document.getElementById("motion-expand-body");
     const ctaEl = document.getElementById("motion-expand-cta");
     const video = motionExpand.querySelector(".motion-mg-expand__video");
     const source = video?.querySelector("source");
+    const youtubePlayer = motionExpand.querySelector(".motion-mg-expand__youtube-player");
     const image = motionExpand.querySelector(".motion-mg-expand__image");
     const secondaryImage = motionExpand.querySelector(".motion-mg-expand__image-secondary");
     const secondaryImageLink = motionExpand.querySelector(".motion-mg-expand__image-secondary-link");
@@ -417,6 +435,10 @@ document.addEventListener("DOMContentLoaded", () => {
           if (mediaType === "image" && image) {
             video?.pause();
             video?.setAttribute("hidden", "");
+            if (youtubePlayer) {
+              youtubePlayer.setAttribute("hidden", "");
+              youtubePlayer.setAttribute("src", "");
+            }
             image.removeAttribute("hidden");
             image.setAttribute("src", currentSrc || "");
             image.setAttribute("alt", title);
@@ -465,6 +487,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (mediaType === "image" && image) {
           // image content is handled by renderContent()
         } else if (video && source && src) {
+          const youtubeVideoId = extractYouTubeVideoId(src);
           image?.setAttribute("hidden", "");
           if (secondaryImage) {
             secondaryImage.setAttribute("hidden", "");
@@ -478,10 +501,25 @@ document.addEventListener("DOMContentLoaded", () => {
           renderSecondaryLanguage = null;
           isSecondaryAltMode = false;
           secondaryImageLink?.removeAttribute("href");
-          video.removeAttribute("hidden");
-          video.pause();
-          source.setAttribute("src", src);
-          video.load();
+          if (youtubeVideoId && youtubePlayer) {
+            video.setAttribute("hidden", "");
+            video.pause();
+            source.setAttribute("src", "");
+            youtubePlayer.removeAttribute("hidden");
+            youtubePlayer.setAttribute(
+              "src",
+              `https://www.youtube.com/embed/${youtubeVideoId}?rel=0`,
+            );
+          } else {
+            if (youtubePlayer) {
+              youtubePlayer.setAttribute("hidden", "");
+              youtubePlayer.setAttribute("src", "");
+            }
+            video.removeAttribute("hidden");
+            video.pause();
+            source.setAttribute("src", src);
+            video.load();
+          }
         }
         motionExpand.removeAttribute("hidden");
         requestAnimationFrame(() => {
@@ -503,6 +541,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       motionExpand.classList.remove("is-open");
       video?.pause();
+      if (source) {
+        source.setAttribute("src", "");
+      }
+      if (youtubePlayer) {
+        youtubePlayer.setAttribute("hidden", "");
+        youtubePlayer.setAttribute("src", "");
+      }
       if (image) {
         image.setAttribute("hidden", "");
         image.removeAttribute("src");
