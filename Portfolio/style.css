@@ -24,13 +24,13 @@
 body {
   margin: 0;
   font-family: "Arial Black", Arial, sans-serif;
-  background-color: #e82142;
-  color: #fff;
+  background-color: #231f20;
+  color: #fedc30;
   overflow-x: hidden;
   position: relative;
 }
 
-/* Crumpled paper texture over the red, subtle */
+/* Crumpled paper texture overlay, subtle */
 body::before {
   content: "";
   position: fixed;
@@ -52,48 +52,65 @@ body .site-header .site-title {
 }
 
 body.theme-alt-global {
-  background-color: #231f20;
-  color: #fedc30;
+  background-color: #e82142;
+  color: #fff;
 }
 
 body.theme-alt-global .site-header {
-  background-color: #231f20;
+  background-color: #e82142;
 }
 
 body.theme-alt-global .intro-overlay {
-  background-color: #231f20;
+  background-color: #e82142;
 }
 
 body.theme-alt-global .header-divider {
-  background-color: #fedc30;
+  background-color: rgba(255, 255, 255, 0.95);
 }
 
 body.theme-alt-global .nav-button,
 body.theme-alt-global .motion-mg-return {
-  background: #fedc30;
-  color: #231f20;
-  border-color: rgba(254, 220, 48, 0.95);
+  background: #f5f5f5;
+  color: #a31c2f;
+  border-color: rgba(255, 255, 255, 0.95);
+}
+
+body.theme-alt-global .nav-button:focus-visible,
+body.theme-alt-global .motion-mg-return:focus-visible {
+  outline-color: rgba(255, 255, 255, 0.95);
 }
 
 body.theme-alt-global.page-misc-posters {
-  --misc-bg: #231f20;
-  --misc-fg: #fedc30;
-  --misc-panel-bg: rgba(35, 31, 32, 0.8);
-  --misc-panel-border: rgba(254, 220, 48, 0.35);
-  --misc-tab-bg: #231f20;
-  --misc-tab-bg-active: rgba(255, 255, 255, 0.16);
-  --misc-tab-border: rgba(255, 255, 255, 0.45);
-  --misc-tab-text: #fff;
+  --misc-bg: #e82142;
+  --misc-fg: #ffffff;
+  --misc-panel-bg: rgba(255, 255, 255, 0.12);
+  --misc-panel-border: rgba(255, 255, 255, 0.3);
+  --misc-tab-bg: rgba(0, 0, 0, 0.16);
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.2);
+  --misc-tab-border: rgba(255, 255, 255, 0.4);
+  --misc-tab-text: #ffffff;
 }
 
 body.theme-alt-global .motion-mg-card:nth-child(even) {
-  background: #231f20;
+  background: #e82142;
   color: #fff;
 }
 
 body.theme-alt-global .ai-drop-tab:nth-child(even) .ai-drop-tab__summary {
-  background: #231f20;
+  background: #e82142;
   color: #fff;
+}
+
+body.theme-alt-global.home-theme-glitch::after {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.3) 0,
+      rgba(255, 255, 255, 0.3) 2px,
+      rgba(232, 33, 66, 0.16) 2px,
+      rgba(232, 33, 66, 0.16) 4px
+    ),
+    linear-gradient(110deg, rgba(255, 255, 255, 0.42), rgba(232, 33, 66, 0.32));
 }
 
 @keyframes home-glitch-overlay {
@@ -152,7 +169,7 @@ body.home-theme-glitch .motion-mg-return {
 .site-header {
   position: relative;
   width: 100%;
-  background-color: #e82142;
+  background-color: #231f20;
   padding-top: 0.85rem;
 }
 
@@ -218,13 +235,13 @@ body.home-theme-glitch .motion-mg-return {
   margin: 0;
   cursor: pointer;
   position: relative;
-  background: #f5f5f5;
-  color: #a31c2f;
+  background: #fedc30;
+  color: #231f20;
   font-family: Arial, sans-serif;
   font-size: 1.9rem;
   font-weight: 700;
   padding: 0.45rem 1.4rem;
-  border: 2px solid rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(254, 220, 48, 0.95);
   line-height: 1;
   text-align: center;
   transition: opacity 0.45s ease, transform 0.18s ease;
@@ -252,7 +269,7 @@ body.home-theme-glitch .motion-mg-return {
 }
 
 .nav-button:focus-visible {
-  outline: 3px solid rgba(255, 255, 255, 0.95);
+  outline: 3px solid rgba(254, 220, 48, 0.95);
   outline-offset: 3px;
 }
 
@@ -266,7 +283,7 @@ body.home-theme-glitch .motion-mg-return {
 
 .header-divider {
   height: 4px;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: #fedc30;
   transition: opacity 0.45s ease;
 }
 
@@ -286,7 +303,7 @@ body.home-theme-glitch .motion-mg-return {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #e82142;
+  background-color: #231f20;
   opacity: 1;
   visibility: visible;
   pointer-events: none;
@@ -818,8 +835,8 @@ body.page-ai-artworks {
 }
 
 .ai-drop-tab:nth-child(even) .ai-drop-tab__summary {
-  background: #e82142;
-  color: #fff;
+  background: #231f20;
+  color: #fedc30;
 }
 
 .ai-drop-tab[open] .ai-drop-tab__summary {
@@ -1167,14 +1184,14 @@ body.page-vector-portraits {
 
 /* Misc poster designs: left tabs + theme switching */
 body.page-misc-posters {
-  --misc-bg: #e82142;
-  --misc-fg: #ffffff;
-  --misc-panel-bg: rgba(255, 255, 255, 0.12);
-  --misc-panel-border: rgba(255, 255, 255, 0.3);
-  --misc-tab-bg: rgba(0, 0, 0, 0.16);
-  --misc-tab-bg-active: rgba(255, 255, 255, 0.2);
-  --misc-tab-border: rgba(255, 255, 255, 0.4);
-  --misc-tab-text: #ffffff;
+  --misc-bg: #231f20;
+  --misc-fg: #fedc30;
+  --misc-panel-bg: rgba(35, 31, 32, 0.8);
+  --misc-panel-border: rgba(254, 220, 48, 0.35);
+  --misc-tab-bg: #231f20;
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.16);
+  --misc-tab-border: rgba(255, 255, 255, 0.45);
+  --misc-tab-text: #fff;
   background-color: var(--misc-bg);
   color: var(--misc-fg);
   min-height: 100vh;
@@ -1236,12 +1253,12 @@ body.page-misc-posters.misc-theme-dark {
 body.theme-alt-global.page-misc-posters.misc-theme-red,
 body.theme-alt-global.page-misc-posters.misc-theme-light,
 body.theme-alt-global.page-misc-posters.misc-theme-dark {
-  --misc-bg: #231f20;
+  --misc-bg: #e82142;
   --misc-fg: #fff;
-  --misc-panel-bg: rgba(35, 31, 32, 0.8);
+  --misc-panel-bg: rgba(255, 255, 255, 0.12);
   --misc-panel-border: rgba(255, 255, 255, 0.28);
-  --misc-tab-bg: #231f20;
-  --misc-tab-bg-active: rgba(255, 255, 255, 0.16);
+  --misc-tab-bg: rgba(0, 0, 0, 0.16);
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.2);
   --misc-tab-border: rgba(255, 255, 255, 0.45);
   --misc-tab-text: #fff;
 }
@@ -1533,8 +1550,8 @@ body.page-motion-mg main.motion-mg-page {
 }
 
 .motion-mg-card:nth-child(even) {
-  background: #e82142;
-  color: #fff;
+  background: #231f20;
+  color: #fedc30;
 }
 
 .motion-mg-card:hover,
@@ -2024,9 +2041,9 @@ body.page-jsa-posters .motion-mg-expand__image-secondary {
   font-size: 1.9rem;
   font-weight: 700;
   line-height: 1;
-  color: #a31c2f;
-  background: #fff;
-  border: 2px solid rgba(255, 255, 255, 0.95);
+  color: #231f20;
+  background: #fedc30;
+  border: 2px solid rgba(254, 220, 48, 0.95);
   text-align: center;
   transition: transform 0.18s ease, filter 0.18s ease;
 }
@@ -2041,7 +2058,7 @@ body.page-jsa-posters .motion-mg-expand__image-secondary {
 }
 
 .motion-mg-return:focus-visible {
-  outline: 3px solid rgba(255, 255, 255, 0.95);
+  outline: 3px solid rgba(254, 220, 48, 0.95);
   outline-offset: 3px;
 }
 
