@@ -402,6 +402,75 @@ body.intro-complete .intro-overlay {
   visibility: hidden;
 }
 
+/* Home tiles: flip up one-by-one after the intro title sequence */
+body.page-home .project-row {
+  perspective: 1400px;
+}
+
+@keyframes home-tile-flip-up {
+  0% {
+    opacity: 0;
+    transform: rotateX(76deg) translateY(36px);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0);
+  }
+}
+
+body.page-home:not(.tiles-reveal) .project-tile {
+  opacity: 0;
+  transform: rotateX(76deg) translateY(36px);
+  transform-origin: center bottom;
+  pointer-events: none;
+}
+
+body.page-home.tiles-reveal .project-tile {
+  animation: home-tile-flip-up 0.68s cubic-bezier(0.22, 1, 0.28, 1) both;
+  transform-origin: center bottom;
+  backface-visibility: hidden;
+  pointer-events: auto;
+}
+
+body.page-home.tiles-reveal .project-tile:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+body.page-home.tiles-reveal .project-tile:nth-child(2) {
+  animation-delay: 0.18s;
+}
+
+body.page-home.tiles-reveal .project-tile:nth-child(3) {
+  animation-delay: 0.31s;
+}
+
+body.page-home.tiles-reveal .project-tile:nth-child(4) {
+  animation-delay: 0.44s;
+}
+
+body.page-home.tiles-reveal .project-tile:nth-child(5) {
+  animation-delay: 0.57s;
+}
+
+body.page-home.tiles-reveal .project-tile:nth-child(6) {
+  animation-delay: 0.7s;
+}
+
+body.page-home.tiles-reveal--instant .project-tile {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.page-home.tiles-reveal .project-tile {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .project-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -887,6 +956,13 @@ body.page-ai-artworks {
   height: min(46vh, 420px);
   object-fit: cover;
   border-radius: 6px;
+  cursor: zoom-in;
+  transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+.ai-drop-tab__grid img:hover {
+  filter: brightness(1.04);
+  transform: scale(1.01);
 }
 
 body.page-vector-portraits .ai-gallery-page {
@@ -1212,41 +1288,38 @@ body.page-misc-posters .header-divider {
   background-color: color-mix(in srgb, var(--misc-fg) 82%, transparent);
 }
 
+/* Per-tab accents; default site palette is yellow/black (see theme-alt-global overrides). */
 body.page-misc-posters.misc-theme-red {
-  --misc-bg: #e82142;
-  --misc-fg: #ffffff;
-  --misc-panel-bg: rgba(255, 255, 255, 0.12);
-  --misc-panel-border: rgba(255, 255, 255, 0.3);
-  --misc-tab-bg: rgba(0, 0, 0, 0.16);
-  --misc-tab-bg-active: rgba(255, 255, 255, 0.2);
-  --misc-tab-border: rgba(255, 255, 255, 0.4);
-  --misc-tab-text: #ffffff;
+  --misc-bg: #231f20;
+  --misc-fg: #fedc30;
+  --misc-panel-bg: rgba(35, 31, 32, 0.8);
+  --misc-panel-border: rgba(254, 220, 48, 0.35);
+  --misc-tab-bg: #231f20;
+  --misc-tab-bg-active: rgba(255, 255, 255, 0.16);
+  --misc-tab-border: rgba(255, 255, 255, 0.45);
+  --misc-tab-text: #fff;
 }
 
 body.page-misc-posters.misc-theme-light {
-  --misc-bg: #f3f3f3;
-  --misc-fg: #151515;
-  --misc-panel-bg: rgba(255, 255, 255, 0.72);
-  --misc-panel-border: rgba(0, 0, 0, 0.2);
-  --misc-tab-bg: rgba(0, 0, 0, 0.06);
-  --misc-tab-bg-active: rgba(255, 255, 255, 0.9);
-  --misc-tab-border: rgba(0, 0, 0, 0.3);
-  --misc-tab-text: #151515;
-}
-
-body.page-misc-posters.misc-theme-light .site-title {
-  filter: brightness(0) saturate(100%);
+  --misc-bg: #231f20;
+  --misc-fg: #fedc30;
+  --misc-panel-bg: rgba(254, 220, 48, 0.1);
+  --misc-panel-border: rgba(254, 220, 48, 0.32);
+  --misc-tab-bg: #231f20;
+  --misc-tab-bg-active: rgba(254, 220, 48, 0.22);
+  --misc-tab-border: rgba(254, 220, 48, 0.5);
+  --misc-tab-text: #fedc30;
 }
 
 body.page-misc-posters.misc-theme-dark {
-  --misc-bg: #2f3238;
-  --misc-fg: #f2f2f2;
-  --misc-panel-bg: rgba(0, 0, 0, 0.26);
-  --misc-panel-border: rgba(255, 255, 255, 0.24);
-  --misc-tab-bg: rgba(255, 255, 255, 0.06);
-  --misc-tab-bg-active: rgba(255, 255, 255, 0.15);
-  --misc-tab-border: rgba(255, 255, 255, 0.3);
-  --misc-tab-text: #f2f2f2;
+  --misc-bg: #231f20;
+  --misc-fg: #fedc30;
+  --misc-panel-bg: rgba(0, 0, 0, 0.38);
+  --misc-panel-border: rgba(254, 220, 48, 0.28);
+  --misc-tab-bg: #231f20;
+  --misc-tab-bg-active: rgba(0, 0, 0, 0.35);
+  --misc-tab-border: rgba(255, 255, 255, 0.35);
+  --misc-tab-text: #fff;
 }
 
 /* Global logo-toggle theme should override per-tab misc themes. */

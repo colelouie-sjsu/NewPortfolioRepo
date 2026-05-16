@@ -149,6 +149,44 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  const aiImageViewer = document.getElementById("ai-image-viewer");
+  const aiImageViewerImg = document.getElementById("ai-image-viewer-img");
+  if (body.classList.contains("page-ai-artworks") && aiImageViewer && aiImageViewerImg) {
+    const aiGalleryImages = [...document.querySelectorAll(".ai-drop-tab__grid img")];
+
+    const openAiImageViewer = (src, alt) => {
+      aiImageViewerImg.setAttribute("src", src);
+      aiImageViewerImg.setAttribute("alt", alt || "");
+      aiImageViewer.removeAttribute("hidden");
+      document.body.style.overflow = "hidden";
+    };
+
+    const closeAiImageViewer = () => {
+      if (aiImageViewer.hasAttribute("hidden")) return;
+      aiImageViewer.setAttribute("hidden", "");
+      aiImageViewerImg.setAttribute("src", "");
+      aiImageViewerImg.setAttribute("alt", "");
+      document.body.style.overflow = "";
+    };
+
+    aiGalleryImages.forEach((img) => {
+      img.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const src = img.getAttribute("src");
+        if (src) openAiImageViewer(src, img.getAttribute("alt") || "");
+      });
+    });
+
+    aiImageViewer.querySelectorAll("[data-ai-image-close]").forEach((el) => {
+      el.addEventListener("click", () => closeAiImageViewer());
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAiImageViewer();
+    });
+  }
+
   if (body.classList.contains("page-vector-portraits")) {
     const shuffleInPlace = (arr) => {
       for (let i = arr.length - 1; i > 0; i -= 1) {
@@ -620,6 +658,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const revealHomeTiles = (instant = false) => {
+    if (!body.classList.contains("page-home")) return;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (instant || prefersReducedMotion) {
+      body.classList.add("tiles-reveal", "tiles-reveal--instant");
+      return;
+    }
+    requestAnimationFrame(() => {
+      body.classList.add("tiles-reveal");
+    });
+  };
+
   if (!body.classList.contains("intro-active")) return;
 
   try {
@@ -627,6 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sessionStorage.removeItem(introSkipKey);
       body.classList.add("intro-complete");
       body.classList.remove("intro-active", "intro-visible", "intro-subtitle-visible", "intro-exit");
+      revealHomeTiles(true);
       return;
     }
   } catch (e) {
@@ -649,6 +700,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     body.classList.add("intro-complete");
     body.classList.remove("intro-active", "intro-visible", "intro-subtitle-visible", "intro-exit");
+    revealHomeTiles(false);
   }, 5000);
 });
 
