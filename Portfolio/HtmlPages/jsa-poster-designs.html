@@ -16,7 +16,31 @@
     <div class="header-divider" aria-hidden="true"></div>
   </header>
 
-  <main class="portfolio-layout project-detail motion-mg-page">
+  <main class="portfolio-layout project-detail motion-mg-page" data-misc-tabs>
+    <div class="jsa-semester-tabs" role="tablist" aria-label="Semesters">
+      <button
+        type="button"
+        class="jsa-semester-tab is-active"
+        role="tab"
+        aria-selected="true"
+        aria-controls="jsa-panel-spring26"
+        data-misc-target="spring26"
+      >
+        Spring &lsquo;26
+      </button>
+      <button
+        type="button"
+        class="jsa-semester-tab"
+        role="tab"
+        aria-selected="false"
+        aria-controls="jsa-panel-fall26"
+        data-misc-target="fall26"
+      >
+        Fall &lsquo;26
+      </button>
+    </div>
+
+    <section id="jsa-panel-spring26" class="jsa-semester-panel is-active" role="tabpanel" data-misc-panel="spring26">
     <div class="motion-mg-list">
       <div class="motion-mg-list__inner">
         <button type="button" class="motion-mg-card" style="--card-thumb: url('../Works/JSA/Open%20House%20Post_Final%20png.png');" data-media-type="image" data-media-src="../Works/JSA/Open%20House%20Post_Final%20png.png" data-title="Open House Post" data-body="This poster was my first task when I joined the Graphic Design team for JSA. I created this simple realistic spring poster for the club before developing and learning my personal style. For this post, I aimed for minimalism but I wanted to create an interesting composition and the inclusing of a spring themed photo. To achieve my goal, I created text and shape interactions with a cherry blossom tree to add depth and had all of the characters leaning toward an upward direction. ">
@@ -65,6 +89,13 @@
         </button>
       </div>
     </div>
+    </section>
+
+    <section id="jsa-panel-fall26" class="jsa-semester-panel" role="tabpanel" data-misc-panel="fall26" hidden>
+      <div class="jsa-semester-empty">
+        <p class="project-detail__lead">Fall &lsquo;26 designs are on the way &mdash; check back soon!</p>
+      </div>
+    </section>
   </main>
 
   <div class="motion-mg-expand motion-mg-expand--poster" id="motion-expand" hidden role="dialog" aria-modal="true" aria-labelledby="motion-expand-title">
