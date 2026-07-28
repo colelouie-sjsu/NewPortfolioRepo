@@ -366,6 +366,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const jsaImageViewerImg = document.getElementById("jsa-image-viewer-img");
     const isJsaPostersPage = body.classList.contains("page-jsa-posters");
 
+    cards.forEach((card) => {
+      const explicitThumb = card.getAttribute("data-thumb-src") || "";
+      const mediaThumb = card.getAttribute("data-media-src") || "";
+      const videoSrc = card.getAttribute("data-video-src") || "";
+      let thumbSrc = explicitThumb || mediaThumb;
+      if (!thumbSrc && videoSrc) {
+        const youtubeVideoId = extractYouTubeVideoId(videoSrc);
+        if (youtubeVideoId) {
+          thumbSrc = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+        }
+      }
+      if (thumbSrc) {
+        card.style.setProperty("--card-thumb", `url("${thumbSrc}")`);
+      }
+    });
+
     const openJsaImageViewer = (src, altText) => {
       if (!isJsaPostersPage || !jsaImageViewer || !jsaImageViewerImg || !src) return;
       jsaImageViewerImg.setAttribute("src", src);
@@ -399,12 +415,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    cards.forEach((card) => {
-      const cardImageSrc = card.getAttribute("data-media-src");
-      if (cardImageSrc && card.getAttribute("data-media-type") === "image") {
-        card.style.setProperty("--card-thumb", `url("${cardImageSrc}")`);
-      }
-    });
+    if (image) {
+      image.addEventListener("dblclick", () => {
+        const externalLink = image.dataset.externalLink;
+        if (!externalLink) return;
+        window.open(externalLink, "_blank", "noopener,noreferrer");
+      });
+    }
 
     const openFromCard = (card) => {
       const src = card.getAttribute("data-media-src") || card.getAttribute("data-video-src");
@@ -496,6 +513,13 @@ document.addEventListener("DOMContentLoaded", () => {
               secondaryImage.removeAttribute("src");
               secondaryImage.setAttribute("alt", "");
               secondaryImageLink?.removeAttribute("href");
+            }
+            if (!currentSecondarySrc && currentSecondaryLink) {
+              image.style.cursor = "pointer";
+              image.dataset.externalLink = currentSecondaryLink;
+            } else {
+              image.style.cursor = "";
+              delete image.dataset.externalLink;
             }
           }
           if (secondaryBadgeEl) {
@@ -594,6 +618,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (image) {
         image.setAttribute("hidden", "");
         image.removeAttribute("src");
+        image.style.cursor = "";
+        delete image.dataset.externalLink;
       }
       if (secondaryImage) {
         secondaryImage.setAttribute("hidden", "");
