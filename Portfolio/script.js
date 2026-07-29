@@ -117,8 +117,58 @@ document.addEventListener("DOMContentLoaded", () => {
           thumbSrc = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`;
         }
       }
+
+      const setThumbImage = (src) => {
+        if (!src) return;
+        card.style.setProperty("--card-thumb", `url("${src}")`);
+        let thumbImg = card.querySelector(".motion-mg-card__thumb");
+        if (!thumbImg) {
+          thumbImg = document.createElement("img");
+          thumbImg.className = "motion-mg-card__thumb";
+          thumbImg.alt = "";
+          thumbImg.setAttribute("loading", "lazy");
+          thumbImg.setAttribute("aria-hidden", "true");
+          card.insertBefore(thumbImg, card.firstChild);
+        }
+        if (thumbImg.getAttribute("src") !== src) {
+          thumbImg.setAttribute("src", src);
+        }
+      };
+
       if (thumbSrc) {
-        card.style.setProperty("--card-thumb", `url("${thumbSrc}")`);
+        setThumbImage(thumbSrc);
+        return;
+      }
+
+      // Capture a frame from local videos so tiles still show artwork.
+      if (videoSrc && !extractYouTubeVideoId(videoSrc)) {
+        const video = document.createElement("video");
+        video.src = videoSrc;
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "metadata";
+        const captureFrame = () => {
+          try {
+            if (!video.videoWidth || !video.videoHeight) return;
+            const canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext("2d");
+            if (!ctx) return;
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            setThumbImage(canvas.toDataURL("image/jpeg", 0.82));
+          } catch (e) {
+            // Ignore capture failures (e.g. tainted canvas).
+          }
+        };
+        video.addEventListener("loadeddata", () => {
+          try {
+            video.currentTime = Math.min(0.15, (video.duration || 1) * 0.05);
+          } catch (e) {
+            captureFrame();
+          }
+        });
+        video.addEventListener("seeked", captureFrame, { once: true });
       }
     });
   };

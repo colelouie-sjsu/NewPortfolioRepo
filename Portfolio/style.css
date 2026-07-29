@@ -2113,6 +2113,26 @@ body.theme-alt-global .jsa-semester-tab.is-active {
   overflow: visible;
 }
 
+.motion-mg-card__thumb {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  pointer-events: none;
+  display: block;
+}
+
+.motion-mg-card:has(.motion-mg-card__thumb) {
+  background-image: none;
+}
+
+body.page-jsa-posters .motion-mg-card__thumb {
+  object-position: center top;
+}
+
 body.page-jsa-posters .jsa-semester-panel .motion-mg-list {
   padding-top: 0.35rem;
 }
@@ -2191,6 +2211,7 @@ body.page-jsa-posters .jsa-semester-tabs {
   position: absolute;
   top: 1rem;
   right: 1rem;
+  z-index: 5;
   width: 2.75rem;
   height: 2.75rem;
   border: 2px solid #1a1e1f;
@@ -2211,10 +2232,6 @@ body.page-jsa-posters .jsa-semester-tabs {
   transform: scale(1.03);
 }
 
-body.page-jsa-posters .motion-mg-expand__title {
-  padding-right: 0;
-}
-
 .motion-mg-expand__title {
   margin: 0;
   padding-right: 3.25rem;
@@ -2231,21 +2248,23 @@ body.page-jsa-posters .motion-mg-expand__title {
 .motion-mg-expand__grid {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: 1.35rem;
+  gap: 1rem;
   align-items: start;
+  transform: translateX(-12px);
 }
 
 .motion-mg-expand--poster .motion-mg-expand__grid {
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: 1.75rem;
+  gap: 1rem;
 }
 
 .motion-mg-expand--poster .motion-mg-expand__media {
   position: relative;
   width: fit-content;
   max-width: 100%;
-  margin-left: 70px;
+  margin-left: 28px;
   margin-top: -10px;
+  justify-self: end;
 }
 
 .motion-mg-expand--poster .motion-mg-expand__image {
@@ -2339,7 +2358,7 @@ body.page-jsa-posters .motion-mg-expand__title {
 
 .motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__grid {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 2.1rem;
+  gap: 1rem;
 }
 
 .motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__body {
@@ -2371,7 +2390,7 @@ body.page-jsa-posters .motion-mg-expand__title {
 
 .motion-mg-expand--poster.is-merch-layout.has-secondary-media .motion-mg-expand__grid {
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: 1.1rem;
+  gap: 1rem;
   align-items: start;
 }
 
@@ -2387,7 +2406,7 @@ body.page-jsa-posters .motion-mg-expand__title {
 .motion-mg-expand--poster.is-merch-layout.has-secondary-media .motion-mg-expand__body {
   grid-column: 2;
   grid-row: 1;
-  transform: translateX(-26px);
+  transform: none;
 }
 
 .motion-mg-expand--poster.is-merch-layout.has-secondary-media .motion-mg-expand__image-secondary {
@@ -2398,7 +2417,7 @@ body.page-jsa-posters .motion-mg-expand__title {
   justify-self: start;
   width: min(100%, 360px);
   max-width: 360px;
-  transform: translateX(-146px);
+  transform: none;
 }
 
 @media (max-width: 980px) {
@@ -2410,13 +2429,28 @@ body.page-jsa-posters .motion-mg-expand__title {
   .motion-mg-expand--poster .motion-mg-expand__media {
     margin-left: 0;
     margin-top: 0;
+    justify-self: start;
+  }
+
+  .motion-mg-expand__grid {
+    transform: none;
+  }
+
+  .motion-mg-expand__body,
+  .motion-mg-expand--poster .motion-mg-expand__body,
+  .motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__body {
+    margin-left: 0;
+  }
+
+  .motion-mg-expand--poster.is-merch-layout.has-secondary-media .motion-mg-expand__body {
+    transform: none;
   }
 
   .motion-mg-expand--poster.is-merch-layout.has-secondary-media .motion-mg-expand__image-secondary {
     width: min(42vw, 320px);
     max-width: 320px;
     margin: 0.75rem 0 0;
-    transform: translateX(-38px);
+    transform: none;
   }
 
   .motion-mg-expand--poster.popup-variant-interactive-diagonal.has-secondary-media .motion-mg-expand__image-secondary {
@@ -2492,6 +2526,7 @@ body.page-jsa-posters .motion-mg-expand__image-secondary {
   background: rgba(232, 230, 225, 0.96);
   color: #121212;
   border: 1px solid rgba(0, 0, 0, 0.08);
+  margin-left: 0;
 }
 
 .motion-mg-expand--poster .motion-mg-expand__body {
@@ -2556,6 +2591,10 @@ body.page-jsa-posters .motion-mg-expand__image-secondary {
 
   .motion-mg-expand__grid {
     grid-template-columns: 1fr;
+  }
+
+  .motion-mg-expand__body {
+    margin-left: 0;
   }
 
   .motion-mg-expand--poster .motion-mg-expand__grid {
