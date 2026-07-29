@@ -2436,6 +2436,10 @@ body.page-jsa-posters .jsa-semester-tabs {
     transform: none;
   }
 
+  body.page-jsa-posters .motion-mg-expand__grid {
+    transform: none;
+  }
+
   .motion-mg-expand__body,
   .motion-mg-expand--poster .motion-mg-expand__body,
   .motion-mg-expand--poster.popup-variant-interactive-diagonal .motion-mg-expand__body {
@@ -2515,6 +2519,10 @@ body.page-jsa-posters .jsa-semester-tabs {
 body.page-jsa-posters .motion-mg-expand__image,
 body.page-jsa-posters .motion-mg-expand__image-secondary {
   cursor: zoom-in;
+}
+
+body.page-jsa-posters .motion-mg-expand__grid {
+  transform: translateX(-84px);
 }
 
 .motion-mg-expand__body {
