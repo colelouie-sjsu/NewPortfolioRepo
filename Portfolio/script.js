@@ -2,6 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const body = document.body;
   const introSkipKey = "skipIntroOnce";
   const globalThemeStorageKey = "portfolioGlobalThemeAlt";
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (!body.classList.contains("page-home")) {
+    body.classList.add("page-assets-pending");
+  }
 
   try {
     if (localStorage.getItem(globalThemeStorageKey) === "1") {
@@ -39,22 +44,179 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("click", () => {
       const href = el.getAttribute("data-href");
       if (!href) return;
+      if (body.classList.contains("tiles-exit") || body.classList.contains("tile-transition-active")) {
+        return;
+      }
 
       const isReturnButton = el.classList.contains("motion-mg-return")
         || el.classList.contains("project-detail__back");
       const isIndexDestination = /(^|\/)\.\.\/index\.html$|(^|\/)index\.html$/.test(href);
+      const isHomeTile = body.classList.contains("page-home") && el.classList.contains("project-tile");
+      const prefersReducedMotionNav = prefersReducedMotion;
+      const transitionMs = prefersReducedMotionNav ? 0 : 820;
 
-      if (isReturnButton && isIndexDestination) {
-        try {
-          sessionStorage.setItem(introSkipKey, "1");
-        } catch (e) {
-          // Ignore storage errors; navigation still works.
+      const navigate = () => {
+        if (isReturnButton && isIndexDestination) {
+          try {
+            sessionStorage.setItem(introSkipKey, "1");
+          } catch (e) {
+            // Ignore storage errors; navigation still works.
+          }
         }
+        window.location.assign(href);
+      };
+
+      if (isHomeTile) {
+        body.classList.add("tiles-exit");
+        body.classList.remove("tiles-reveal");
+        window.setTimeout(navigate, transitionMs);
+        return;
       }
 
-      window.location.assign(href);
+      if (isReturnButton && isIndexDestination) {
+        playReturnPageExit(transitionMs).then(navigate);
+        return;
+      }
+
+      navigate();
     });
   });
+
+  const isVisibleAsset = (el) => {
+    if (el.closest("[hidden]")) return false;
+    const style = window.getComputedStyle(el);
+    return style.display !== "none" && style.visibility !== "hidden";
+  };
+
+  const extractYouTubeVideoId = (url) => {
+    if (!url) return "";
+    const trimmedUrl = url.trim();
+    const idPatterns = [
+      /(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,
+      /(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
+      /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+      /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+    ];
+
+    for (const pattern of idPatterns) {
+      const match = trimmedUrl.match(pattern);
+      if (match?.[1]) return match[1];
+    }
+    return "";
+  };
+
+  const applyCardThumbs = () => {
+    document.querySelectorAll(".motion-mg-card").forEach((card) => {
+      const explicitThumb = card.getAttribute("data-thumb-src") || "";
+      const mediaThumb = card.getAttribute("data-media-src") || "";
+      const videoSrc = card.getAttribute("data-video-src") || "";
+      let thumbSrc = explicitThumb || mediaThumb;
+      if (!thumbSrc && videoSrc) {
+        const youtubeVideoId = extractYouTubeVideoId(videoSrc);
+        if (youtubeVideoId) {
+          thumbSrc = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`;
+        }
+      }
+      if (thumbSrc) {
+        card.style.setProperty("--card-thumb", `url("${thumbSrc}")`);
+      }
+    });
+  };
+
+  const collectPageAssets = () => {
+    const visibleCards = [...document.querySelectorAll(".motion-mg-card")].filter(isVisibleAsset);
+    const pageChrome = [...document.querySelectorAll(
+      ".jsa-semester-tabs, .misc-posters-menu, .misc-posters-panel.is-active .project-detail__title, .misc-posters-panel.is-active .project-detail__lead",
+    )].filter(isVisibleAsset);
+    const fallbackAssets = [...document.querySelectorAll(
+      ".about-layout__photo-wrap, .about-layout__content > *, .contacts-card-wrap, .contacts-layout__content > *, .jsa-semester-empty",
+    )].filter(isVisibleAsset);
+
+    return visibleCards.length
+      ? [...pageChrome, ...visibleCards]
+      : fallbackAssets;
+  };
+
+  const playReturnPageExit = (transitionMs) => new Promise((resolve) => {
+    if (transitionMs <= 0) {
+      resolve();
+      return;
+    }
+
+    // Close any open detail popup so page tiles are visible for the exit.
+    const openExpand = document.getElementById("motion-expand");
+    if (openExpand && openExpand.classList.contains("is-open")) {
+      openExpand.classList.remove("is-open");
+      openExpand.setAttribute("hidden", "");
+      document.body.style.overflow = "";
+    }
+    ["misc-image-viewer", "ai-image-viewer", "jsa-image-viewer"].forEach((id) => {
+      const viewer = document.getElementById(id);
+      if (viewer && !viewer.hasAttribute("hidden")) {
+        viewer.setAttribute("hidden", "");
+      }
+    });
+
+    body.classList.add("tile-transition-active", "page-assets-exit");
+
+    const assets = collectPageAssets();
+    assets.forEach((el, index) => {
+      el.classList.remove("page-enter-asset");
+      el.classList.add("page-exit-asset");
+      el.style.setProperty("--page-exit-delay", `${Math.min(index * 0.05, 0.4)}s`);
+    });
+    body.classList.remove("page-assets-ready", "page-assets-ready--instant");
+    restartFlipAnimation(assets);
+
+    // Soften surrounding chrome so the falling assets read clearly.
+    document.querySelectorAll(".site-header, .header-divider, .vector-scroll-bg").forEach((el) => {
+      el.classList.add("page-exit-chrome");
+    });
+
+    window.setTimeout(() => {
+      resolve();
+    }, transitionMs);
+  });
+
+  const restartFlipAnimation = (elements) => {
+    elements.forEach((el) => {
+      el.style.animation = "none";
+    });
+    // Force the browser to commit the pre-animation state before restarting.
+    void body.offsetWidth;
+    elements.forEach((el) => {
+      el.style.removeProperty("animation");
+    });
+  };
+
+  const revealPageAssets = () => {
+    if (body.classList.contains("page-home")) return;
+
+    const assets = collectPageAssets();
+    assets.forEach((el, index) => {
+      el.classList.add("page-enter-asset");
+      el.style.setProperty("--page-enter-delay", `${Math.min(0.04 + index * 0.07, 0.9)}s`);
+    });
+
+    if (!assets.length || prefersReducedMotion) {
+      body.classList.add("page-assets-ready", "page-assets-ready--instant");
+      body.classList.remove("page-assets-pending");
+      return;
+    }
+
+    body.classList.remove("page-assets-ready", "page-assets-ready--instant");
+    body.classList.add("page-assets-pending");
+    restartFlipAnimation(assets);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        body.classList.add("page-assets-ready");
+        body.classList.remove("page-assets-pending");
+      });
+    });
+  };
+
+  applyCardThumbs();
 
   const miscTabsRoot = document.querySelector("[data-misc-tabs]");
   if (miscTabsRoot) {
@@ -325,23 +487,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const motionExpand = document.getElementById("motion-expand");
   if (motionExpand) {
-    const extractYouTubeVideoId = (url) => {
-      if (!url) return "";
-      const trimmedUrl = url.trim();
-      const idPatterns = [
-        /(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,
-        /(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/,
-        /(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
-        /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
-      ];
-
-      for (const pattern of idPatterns) {
-        const match = trimmedUrl.match(pattern);
-        if (match?.[1]) return match[1];
-      }
-      return "";
-    };
-
     const cards = [...document.querySelectorAll(".motion-mg-card")];
     const titleEl = document.getElementById("motion-expand-title");
     const bodyEl = document.getElementById("motion-expand-body");
@@ -365,22 +510,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const jsaImageViewer = document.getElementById("jsa-image-viewer");
     const jsaImageViewerImg = document.getElementById("jsa-image-viewer-img");
     const isJsaPostersPage = body.classList.contains("page-jsa-posters");
-
-    cards.forEach((card) => {
-      const explicitThumb = card.getAttribute("data-thumb-src") || "";
-      const mediaThumb = card.getAttribute("data-media-src") || "";
-      const videoSrc = card.getAttribute("data-video-src") || "";
-      let thumbSrc = explicitThumb || mediaThumb;
-      if (!thumbSrc && videoSrc) {
-        const youtubeVideoId = extractYouTubeVideoId(videoSrc);
-        if (youtubeVideoId) {
-          thumbSrc = `https://img.youtube.com/vi/${youtubeVideoId}/hqdefault.jpg`;
-        }
-      }
-      if (thumbSrc) {
-        card.style.setProperty("--card-thumb", `url("${thumbSrc}")`);
-      }
-    });
 
     const openJsaImageViewer = (src, altText) => {
       if (!isJsaPostersPage || !jsaImageViewer || !jsaImageViewerImg || !src) return;
@@ -686,15 +815,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const revealHomeTiles = (instant = false) => {
     if (!body.classList.contains("page-home")) return;
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const tiles = [...document.querySelectorAll(".project-tile")];
+
     if (instant || prefersReducedMotion) {
       body.classList.add("tiles-reveal", "tiles-reveal--instant");
       return;
     }
+
+    body.classList.remove("tiles-reveal", "tiles-reveal--instant");
+    restartFlipAnimation(tiles);
+
     requestAnimationFrame(() => {
-      body.classList.add("tiles-reveal");
+      requestAnimationFrame(() => {
+        body.classList.add("tiles-reveal");
+      });
     });
   };
+
+  // Run entrance after page setup/thumbs so flip-up has content to show.
+  revealPageAssets();
 
   if (!body.classList.contains("intro-active")) return;
 
@@ -703,7 +842,8 @@ document.addEventListener("DOMContentLoaded", () => {
       sessionStorage.removeItem(introSkipKey);
       body.classList.add("intro-complete");
       body.classList.remove("intro-active", "intro-visible", "intro-subtitle-visible", "intro-exit");
-      revealHomeTiles(true);
+      // After return transition, flip tiles up instead of showing them instantly.
+      revealHomeTiles(false);
       return;
     }
   } catch (e) {
