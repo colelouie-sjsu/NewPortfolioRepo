@@ -176,10 +176,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const collectPageAssets = () => {
     const visibleCards = [...document.querySelectorAll(".motion-mg-card")].filter(isVisibleAsset);
     const pageChrome = [...document.querySelectorAll(
-      ".jsa-semester-tabs, .misc-posters-menu, .misc-posters-panel.is-active .project-detail__title, .misc-posters-panel.is-active .project-detail__lead",
+      ".jsa-semester-tabs, .misc-posters-menu, .misc-posters-panel.is-active .project-detail__title, .misc-posters-panel.is-active .project-detail__lead, .sideprint-intro, .sideprint-banner",
     )].filter(isVisibleAsset);
     const fallbackAssets = [...document.querySelectorAll(
-      ".about-layout__photo-wrap, .about-layout__content > *, .contacts-card-wrap, .contacts-layout__content > *, .jsa-semester-empty",
+      ".about-layout__photo-wrap, .about-layout__content > *, .contacts-card-wrap, .contacts-layout__content > *, .jsa-semester-empty, .sideprint-intro, .sideprint-banner",
     )].filter(isVisibleAsset);
 
     return visibleCards.length
