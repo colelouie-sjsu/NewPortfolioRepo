@@ -176,15 +176,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const collectPageAssets = () => {
     const visibleCards = [...document.querySelectorAll(".motion-mg-card")].filter(isVisibleAsset);
     const pageChrome = [...document.querySelectorAll(
-      ".jsa-semester-tabs, .misc-posters-menu, .misc-posters-panel.is-active .project-detail__title, .misc-posters-panel.is-active .project-detail__lead, .sideprint-intro, .sideprint-banner",
+      ".art-page-title, .jsa-semester-tabs, .misc-posters-menu, .misc-posters-panel.is-active .project-detail__title, .misc-posters-panel.is-active .project-detail__lead, .sideprint-intro, .sideprint-banner",
     )].filter(isVisibleAsset);
     const fallbackAssets = [...document.querySelectorAll(
       ".about-layout__photo-wrap, .about-layout__content > *, .contacts-card-wrap, .contacts-layout__content > *, .jsa-semester-empty, .sideprint-intro, .sideprint-banner",
     )].filter(isVisibleAsset);
 
-    return visibleCards.length
-      ? [...pageChrome, ...visibleCards]
-      : fallbackAssets;
+    const assets = [...pageChrome, ...visibleCards];
+    return assets.length ? assets : fallbackAssets;
   };
 
   const playReturnPageExit = (transitionMs) => new Promise((resolve) => {
@@ -266,6 +265,43 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
+  const revealActiveMiscPanel = () => {
+    if (body.classList.contains("page-home") || prefersReducedMotion) return;
+
+    const activePanel = document.querySelector(".misc-posters-panel.is-active");
+    if (!activePanel) return;
+
+    // Only animate the newly shown section contents, not the shared page chrome.
+    const panelAssets = [
+      ...activePanel.querySelectorAll(".project-detail__title, .project-detail__lead, .motion-mg-card"),
+    ].filter(isVisibleAsset);
+
+    if (!panelAssets.length) return;
+
+    document.querySelectorAll(".page-enter-asset, .page-exit-asset").forEach((el) => {
+      el.classList.remove("page-enter-asset", "page-exit-asset");
+      el.style.removeProperty("--page-enter-delay");
+      el.style.removeProperty("--page-exit-delay");
+      el.style.removeProperty("animation");
+    });
+
+    panelAssets.forEach((el, index) => {
+      el.classList.add("page-enter-asset");
+      el.style.setProperty("--page-enter-delay", `${Math.min(0.04 + index * 0.07, 0.9)}s`);
+    });
+
+    body.classList.remove("page-assets-ready", "page-assets-ready--instant", "page-assets-exit");
+    body.classList.add("page-assets-pending");
+    restartFlipAnimation(panelAssets);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        body.classList.add("page-assets-ready");
+        body.classList.remove("page-assets-pending");
+      });
+    });
+  };
+
   applyCardThumbs();
 
   const miscTabsRoot = document.querySelector("[data-misc-tabs]");
@@ -273,8 +309,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const tabButtons = [...miscTabsRoot.querySelectorAll("[data-misc-target]")];
     const panels = [...miscTabsRoot.querySelectorAll("[data-misc-panel]")];
     const themeClasses = ["misc-theme-red", "misc-theme-light", "misc-theme-dark"];
+    let hasActivatedInitialTab = false;
+    let activeTabButton = null;
 
-    const activateTab = (button) => {
+    const activateTab = (button, { animate = true } = {}) => {
+      if (button === activeTabButton && hasActivatedInitialTab) return;
+
       const target = button.getAttribute("data-misc-target");
       const theme = button.getAttribute("data-misc-theme");
 
@@ -294,6 +334,12 @@ document.addEventListener("DOMContentLoaded", () => {
         body.classList.remove(...themeClasses);
         body.classList.add(`misc-theme-${theme}`);
       }
+
+      activeTabButton = button;
+
+      if (animate && hasActivatedInitialTab) {
+        revealActiveMiscPanel();
+      }
     };
 
     tabButtons.forEach((button) => {
@@ -301,7 +347,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     const initialTab = tabButtons.find((tab) => tab.classList.contains("is-active")) || tabButtons[0];
-    if (initialTab) activateTab(initialTab);
+    if (initialTab) {
+      activateTab(initialTab, { animate: false });
+      hasActivatedInitialTab = true;
+    }
 
     const miscImageViewer = document.getElementById("misc-image-viewer");
     const miscImageViewerImg = document.getElementById("misc-image-viewer-img");
