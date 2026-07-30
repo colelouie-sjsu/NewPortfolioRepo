@@ -644,7 +644,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (image) {
-      image.addEventListener("dblclick", () => {
+      image.addEventListener("click", () => {
         const externalLink = image.dataset.externalLink;
         if (!externalLink) return;
         window.open(externalLink, "_blank", "noopener,noreferrer");
