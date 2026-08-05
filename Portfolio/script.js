@@ -597,6 +597,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const secondaryImage = motionExpand.querySelector(".motion-mg-expand__image-secondary");
     const secondaryImageLink = motionExpand.querySelector(".motion-mg-expand__image-secondary-link");
     const secondaryBadgeEl = motionExpand.querySelector("#motion-expand-secondary-badge");
+    const galleryEl = motionExpand.querySelector("#motion-expand-gallery")
+      || motionExpand.querySelector(".motion-mg-expand__gallery");
     const closeTriggers = motionExpand.querySelectorAll("[data-motion-close]");
     const closeBtn = motionExpand.querySelector(".motion-mg-expand__close");
     let openTimer = null;
@@ -609,6 +611,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const jsaImageViewer = document.getElementById("jsa-image-viewer");
     const jsaImageViewerImg = document.getElementById("jsa-image-viewer-img");
     const isJsaPostersPage = body.classList.contains("page-jsa-posters");
+
+    const clearExpandGallery = () => {
+      if (!galleryEl) return;
+      galleryEl.innerHTML = "";
+      galleryEl.setAttribute("hidden", "");
+      motionExpand.classList.remove("has-gallery-media");
+    };
+
+    const populateExpandGallery = (gallerySrcList, title) => {
+      if (!galleryEl) return;
+      clearExpandGallery();
+      if (!gallerySrcList.length) return;
+
+      gallerySrcList.forEach((gallerySrc) => {
+        const galleryImg = document.createElement("img");
+        galleryImg.className = "motion-mg-expand__gallery-image";
+        galleryImg.src = gallerySrc;
+        galleryImg.alt = `${title} process photo`;
+        galleryImg.loading = "lazy";
+        if (isJsaPostersPage) {
+          galleryImg.style.cursor = "zoom-in";
+          galleryImg.addEventListener("click", () => {
+            openJsaImageViewer(gallerySrc, galleryImg.alt);
+          });
+        }
+        galleryEl.appendChild(galleryImg);
+      });
+
+      galleryEl.removeAttribute("hidden");
+      motionExpand.classList.add("has-gallery-media");
+    };
 
     const openJsaImageViewer = (src, altText) => {
       if (!isJsaPostersPage || !jsaImageViewer || !jsaImageViewerImg || !src) return;
@@ -659,6 +692,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const secondaryLinkKo = card.getAttribute("data-secondary-link-ko") || "";
       const secondaryBadge = card.getAttribute("data-secondary-badge") || "";
       const secondaryBadgeAlt = card.getAttribute("data-secondary-badge-alt") || "";
+      const gallerySrcList = (card.getAttribute("data-gallery-src") || "")
+        .split("|")
+        .map((item) => item.trim())
+        .filter(Boolean);
       const allowLanguageToggle = card.getAttribute("data-language-toggle") === "true";
       const popupVariant = card.getAttribute("data-popup-variant") || "";
       const mediaType = card.getAttribute("data-media-type") || "video";
@@ -691,6 +728,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         motionExpand.classList.toggle("has-secondary-media", mediaType === "image" && Boolean(secondarySrc));
         motionExpand.classList.toggle("is-merch-layout", popupVariant === "merch-stack");
+        motionExpand.classList.toggle("has-gallery-media", mediaType === "image" && gallerySrcList.length > 0);
         if (titleEl) titleEl.textContent = title;
         const renderContent = (useSecondaryLanguage = false) => {
           const currentSrc = useSecondaryLanguage && srcKo ? srcKo : src;
@@ -749,6 +787,9 @@ document.addEventListener("DOMContentLoaded", () => {
               image.style.cursor = "";
               delete image.dataset.externalLink;
             }
+            populateExpandGallery(gallerySrcList, title);
+          } else {
+            clearExpandGallery();
           }
           if (secondaryBadgeEl) {
             if (currentBadgeText && hasSecondaryLanguageToggle) {
@@ -791,6 +832,7 @@ document.addEventListener("DOMContentLoaded", () => {
           renderSecondaryLanguage = null;
           isSecondaryAltMode = false;
           secondaryImageLink?.removeAttribute("href");
+          clearExpandGallery();
           if (youtubeVideoId && youtubePlayer) {
             video.setAttribute("hidden", "");
             video.pause();
@@ -866,11 +908,12 @@ document.addEventListener("DOMContentLoaded", () => {
         secondaryBadgeEl.setAttribute("hidden", "");
       }
       secondaryImageLink?.removeAttribute("href");
+      clearExpandGallery();
       if (ctaEl) {
         ctaEl.textContent = "";
         ctaEl.setAttribute("hidden", "");
       }
-      motionExpand.classList.remove("has-secondary-media", "is-merch-layout");
+      motionExpand.classList.remove("has-secondary-media", "is-merch-layout", "has-gallery-media");
       if (currentVariantClass) {
         motionExpand.classList.remove(currentVariantClass);
         currentVariantClass = "";
